@@ -46,3 +46,24 @@ Makefile eol=lf
 
 # MOOS
 *.alog -text
+
+#
+*.kml eol=crlf
+*.KML eol=crlf
+*.xml eol=crlf
+*.XML eol=crlf
+*.java eol=crlf
+*.JAVA eol=crlf
+*.m eol=crlf
+*.M eol=crlf
+*.py eol=crlf
+*.PY eol=crlf
+*.c eol=crlf
+*.C eol=crlf
+*.cpp eol=crlf
+*.CPP eol=crlf
+*.h eol=crlf
+*.H eol=crlf
+*.hpp eol=crlf
+*.HPP eol=crlf
+*.pro eol=crlf
