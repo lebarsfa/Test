@@ -23,13 +23,26 @@
 *.BAT eol=crlf
 *.cmd eol=crlf
 *.CMD eol=crlf
+*.csv -text
+*.CSV -text
+# Reg files are UTF-16 and this might cause problems...
+*.reg binary
+*.REG binary
 
 # Common Linux files
 *.sh eol=lf
 Makefile eol=lf
 
-# Common Visual Studio Files
+# Common Visual Studio files
 *.sln eol=crlf
 *.vcproj eol=crlf
 *.vcxproj eol=crlf
 *.vcxproj.filters eol=crlf
+
+# Seanet
+*.v4log binary
+*.partheader binary
+*.userver binary
+
+# MOOS
+*.alog -text
