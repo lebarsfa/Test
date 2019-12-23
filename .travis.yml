@@ -35,9 +35,6 @@ jobs:
             - Release\Hello.exe
          body: 
             "    One paragraph only...\n\\n<br/><hr/>==0==       12     3    4      "
- 
- 
-            "           2               "
          skip_cleanup: true
          overwrite: true
          draft: true
