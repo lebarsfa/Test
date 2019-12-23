@@ -14,9 +14,9 @@ jobs:
             - Hello
          skip_cleanup: true
          draft: true
-         prerelease: true
-         on:
-            tags: true
+         #prerelease: true
+         #on:
+         #   tags: true
 
    - name: "Windows"
      os: windows
@@ -30,6 +30,6 @@ jobs:
             - Release\Hello.exe
          skip_cleanup: true
          draft: true
-         prerelease: true
-         on:
-            tags: true
+         #prerelease: true
+         #on:
+         #   tags: true
