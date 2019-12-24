@@ -6,7 +6,8 @@ jobs:
      dist: bionic
      compiler: gcc
      script: cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello 
-     before_deploy:
+     before_install:
+         # https://github.com/electron-userland/electron-builder/issues/3559
        - export TRAVIS_TAG="autotagname"
      deploy:
        - provider: releases
@@ -28,7 +29,8 @@ jobs:
      os: windows
      script: 
        - cmd //c "cmake . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
-     before_deploy:
+     before_install:
+         # https://github.com/electron-userland/electron-builder/issues/3559
        - export TRAVIS_TAG="autotagname"
      deploy:
        - provider: releases
