@@ -3,10 +3,15 @@ language: cpp
 # https://github.com/electron-userland/electron-builder/issues/3559
 if: tag IS blank
 
+env:
+      # https://github.com/electron-userland/electron-builder/issues/3559
+    - TRAVIS_TAG="autotagname"
+
 deploy: &deploy_base
     provider: releases
     #name: ${TRAVIS_TAG}
     tag_name: ${TRAVIS_TAG}
+    target_commitish: master
     body: "    One paragraph only"
     api_key:
         secure: XswJJhiDn1DDUMmivWdj/Mfz6IzHexWRgMZoVmcM2gEB9/P8XUgHPL5dpmo+Ep81ILM4Niug7XBE4+EmAMAV/5pPclxfLM47jhBXciG0UQA6BgANI0s630qqVP3/KWh8cxeA3YV87jyf5fvEPwo8KaiNfOIxnVeHraeOjfGPYXPWSHXzTvcz99ZeJMIyk3006PSGPNEhMUbKm6k/eYnJsfQnUIgq6nICRMiGxfhDrh5mVwW9xIDKDqc3vpm6d00pCMmrjbG9c6rh8UD0lfXHV4vs8gDJh1+sK+D2EnPIYKOmjRqb4m8RAnAkd/NBoBenLYPWJgazOziID8P58fcElxttBouMPz3bYbsOize4gPk1KZniKbHVtn+aqQ5fOIiDOv7TyyZRS5Barln8xfOPZje1R/EgdiSj0PabvyhSf/hemRJMCi0yJ7tUklLvIZqPCz76uN9uPAzmWtwisGYiYeJXV5ZffLZeY7Yo4xxVir00mSWZWO3qPnwZlku4T3rLFST5emx4kxsFCfGaicaMjn/YQ4m+ZWXpL5dxgR6IHSKEROK50TqZWA1vb+YH58Zg5xkrd5+4bFALrlE5pA61LDET06nM+m5IjIFurALodi6uHKISfD8yiynCQMFbcNFf+mVroJf1ATlk32GFDakgmXbgtSlmVwUOAYDUtIqMqi8=
@@ -23,9 +28,6 @@ jobs:
      os: linux
      dist: bionic
      compiler: gcc
-     env:
-         # https://github.com/electron-userland/electron-builder/issues/3559
-       - TRAVIS_TAG="autotagname"
      script: cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello 
      deploy:
        <<: *deploy_base
@@ -34,9 +36,6 @@ jobs:
 
    - name: "Windows"
      os: windows
-     env:
-         # https://github.com/electron-userland/electron-builder/issues/3559
-       - TRAVIS_TAG="autotagname"
      script: 
        - cmd //c "cmake . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
      deploy:
