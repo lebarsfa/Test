@@ -6,6 +6,8 @@ jobs:
      dist: bionic
      compiler: gcc
      script: cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello 
+     before_deploy:
+       - export TRAVIS_TAG="autotagname"
      deploy:
        - provider: releases
          #name: ${TRAVIS_TAG}
@@ -26,6 +28,8 @@ jobs:
      os: windows
      script: 
        - cmd //c "cmake . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
+     before_deploy:
+       - export TRAVIS_TAG="autotagname"
      deploy:
        - provider: releases
          #name: ${TRAVIS_TAG}
