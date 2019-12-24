@@ -17,10 +17,10 @@ jobs:
             - Hello
          skip_cleanup: true
          overwrite: true
-         draft: true
+#         draft: true
          prerelease: true
          on:
-            tags: false
+            tags: true
 
    - name: "Windows"
      os: windows
@@ -35,14 +35,10 @@ jobs:
             secure: XswJJhiDn1DDUMmivWdj/Mfz6IzHexWRgMZoVmcM2gEB9/P8XUgHPL5dpmo+Ep81ILM4Niug7XBE4+EmAMAV/5pPclxfLM47jhBXciG0UQA6BgANI0s630qqVP3/KWh8cxeA3YV87jyf5fvEPwo8KaiNfOIxnVeHraeOjfGPYXPWSHXzTvcz99ZeJMIyk3006PSGPNEhMUbKm6k/eYnJsfQnUIgq6nICRMiGxfhDrh5mVwW9xIDKDqc3vpm6d00pCMmrjbG9c6rh8UD0lfXHV4vs8gDJh1+sK+D2EnPIYKOmjRqb4m8RAnAkd/NBoBenLYPWJgazOziID8P58fcElxttBouMPz3bYbsOize4gPk1KZniKbHVtn+aqQ5fOIiDOv7TyyZRS5Barln8xfOPZje1R/EgdiSj0PabvyhSf/hemRJMCi0yJ7tUklLvIZqPCz76uN9uPAzmWtwisGYiYeJXV5ZffLZeY7Yo4xxVir00mSWZWO3qPnwZlku4T3rLFST5emx4kxsFCfGaicaMjn/YQ4m+ZWXpL5dxgR6IHSKEROK50TqZWA1vb+YH58Zg5xkrd5+4bFALrlE5pA61LDET06nM+m5IjIFurALodi6uHKISfD8yiynCQMFbcNFf+mVroJf1ATlk32GFDakgmXbgtSlmVwUOAYDUtIqMqi8=
          file:
             - Release\Hello.exe
-         body: 
-            "    One paragraph only    
-            
-            
-                222    "
+         body: "    One paragraph only"
          skip_cleanup: true
          overwrite: true
-         draft: true
+#         draft: true
          prerelease: true
          on:
-            tags: false
+            tags: true
