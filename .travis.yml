@@ -1,4 +1,8 @@
 language: cpp
+
+# https://github.com/electron-userland/electron-builder/issues/3559
+if: tag IS blank
+
 jobs:
   include:
    - name: "Ubuntu 18.04"
