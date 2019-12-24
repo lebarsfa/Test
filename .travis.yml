@@ -17,7 +17,7 @@ jobs:
             - Hello
          skip_cleanup: true
          overwrite: true
-#         draft: true
+         draft: true
          prerelease: true
          on:
             tags: false
@@ -38,7 +38,7 @@ jobs:
          body: "    One paragraph only"
          skip_cleanup: true
          overwrite: true
-#         draft: true
+         draft: true
          prerelease: true
          on:
             tags: false
