@@ -21,8 +21,8 @@ jobs:
          overwrite: true
 #         draft: true
          prerelease: true
-         on:
-            tags: true
+#         on:
+#            tags: true
 
    - name: "Windows"
      os: windows
@@ -44,5 +44,5 @@ jobs:
          overwrite: true
 #         draft: true
          prerelease: true
-         on:
-            tags: true
+#         on:
+#            tags: true
