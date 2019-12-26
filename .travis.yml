@@ -37,8 +37,9 @@ jobs:
    - name: "Windows"
      os: windows
      install:
+       - "/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere" -products Microsoft.VisualStudio.Product.BuildTools
        - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
-       - ./vs_buildtools.exe update --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --includeRecommended
+       - ./vs_buildtools.exe update --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --includeRecommended | true
      script: 
        - cmd //c "cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
      deploy:
