@@ -45,5 +45,5 @@ jobs:
        <<: *deploy_base
        file:
             - Release\Hello.exe
-    after_deploy:
+     after_deploy:
        - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
