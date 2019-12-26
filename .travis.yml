@@ -38,9 +38,12 @@ jobs:
      os: windows
      install:
        - start //w setupvs.bat
+       - cat out.log
      script: 
        - cmd //c "cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
      deploy:
        <<: *deploy_base
        file:
             - Release\Hello.exe
+    after_deploy:
+       - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
