@@ -31,7 +31,7 @@ jobs:
      services:
        - docker
      script:
-       - "docker run -i --rm -v \"${PWD}:/repo\" daald/ubuntu32:xenial /bin/bash -c \"linux32 --32bit i386 uname -a & md tst & apt-get update & apt-get -y install build-essential cmake & cd /repo & cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello \""
+       - "docker run -i --rm -v \"${PWD}:/repo\" daald/ubuntu32:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && md tst && apt-get update && apt-get -y install build-essential cmake && cd /repo && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello \""
        - ls -l /
        - ls -l ${PWD}
 #     deploy:
