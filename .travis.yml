@@ -6,9 +6,9 @@ script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 # build image
-- docker build -t hypriot/rpi-mysql .
+- docker build -t resin/rpi-raspbian .
 # test image
-- docker run hypriot/rpi-mysql mysql --version
+- docker run resin/rpi-raspbian --version
 
 
 #language: cpp
