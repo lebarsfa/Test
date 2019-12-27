@@ -31,7 +31,9 @@ jobs:
      services:
        - docker
      script:
-       - "docker run -i -v \"${PWD}:/MyProgram\" daald/ubuntu32:trusty /bin/bash -c \"linux32 --32bit i386 ls -l /MyProgram\""
+       - "docker run -i --rm -v \"${PWD}:/repo\" daald/ubuntu32:xenial /bin/bash -c \"linux32 --32bit i386 cd /repo & cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . --parallel && ./Hello \""
+       - ls -l /
+       - ls -l ${PWD}
 #     deploy:
 #       <<: *deploy_base
 #       file:
