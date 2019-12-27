@@ -32,7 +32,7 @@ jobs:
        - xvfb
        - docker
      script:
-       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake xvfb libopencv-dev && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
+       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake xvfb libopencv-dev && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./DisplayImage \""
 
 
 #     script: 
@@ -49,7 +49,7 @@ jobs:
      deploy:
        <<: *deploy_base
        file:
-            - Hello
+            - DisplayImage
 
 #   - name: "Windows"
 #     os: windows
