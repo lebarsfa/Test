@@ -24,32 +24,21 @@ deploy: &deploy_base
 
 jobs:
   include:
-   - name: "Ubuntu 16.04 i386 Docker"
+   - name: "Ubuntu"
      os: linux
-     dist: xenial
+     dist: bionic
      compiler: gcc
      services:
-       - xvfb
        - docker
+     before_install: 
+       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
      script:
-       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake xvfb libopencv-dev && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && echo $DISPLAY && xvfb-run -a ./DisplayImage image.png \""
-
-
-#     script: 
-#       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && apt-get -q update || true && apt-get -y install build-essential cmake xvfb && cmake -D CMAKE_BUILD_TYPE=Release -D ENABLE_STATIC=ON -D ENABLE_MAVLINK_SUPPORT=ON -D ENABLE_LABJACK_SUPPORT=ON -D ENABLE_SBG_SUPPORT=ON . && cmake --build . && echo wait 10 > run_test.txt && echo exit >> run_test.txt && cat run_test.txt | xvfb-run -a ./UxVCtrl && cp ./UxVCtrl ./UxVCtrl_Ubuntu32_static \""
-#     deploy:
-#       <<: *deploy_base
-#       file: UxVCtrl_Ubuntu32_static
-#
-
-
-
-
+       - "docker run -i -v \"${PWD}:/repo\" hypriot/rpi-mysql /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
        - ls -l ${PWD}
      deploy:
        <<: *deploy_base
        file:
-            - DisplayImage
+            - Hello
 
 #   - name: "Windows"
 #     os: windows
