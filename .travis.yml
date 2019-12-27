@@ -26,12 +26,25 @@ jobs:
   include:
    - name: "Ubuntu 16.04 i386 Docker"
      os: linux
-     dist: bionic
+     dist: xenial
      compiler: gcc
      services:
+       - xvfb
        - docker
      script:
-       - docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \"
+       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake xvfb libopencv-dev && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
+
+
+#     script: 
+#       - "docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && apt-get -q update || true && apt-get -y install build-essential cmake xvfb && cmake -D CMAKE_BUILD_TYPE=Release -D ENABLE_STATIC=ON -D ENABLE_MAVLINK_SUPPORT=ON -D ENABLE_LABJACK_SUPPORT=ON -D ENABLE_SBG_SUPPORT=ON . && cmake --build . && echo wait 10 > run_test.txt && echo exit >> run_test.txt && cat run_test.txt | xvfb-run -a ./UxVCtrl && cp ./UxVCtrl ./UxVCtrl_Ubuntu32_static \""
+#     deploy:
+#       <<: *deploy_base
+#       file: UxVCtrl_Ubuntu32_static
+#
+
+
+
+
        - ls -l ${PWD}
      deploy:
        <<: *deploy_base
