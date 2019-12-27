@@ -33,8 +33,8 @@ jobs:
      script:
 #       - "docker run -i --rm -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
 
-       - "docker run -i --rm -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash << COMMANDS
-         linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello
+       - "docker run -i --rm -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386\" << COMMANDS
+         uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello
          COMMANDS"
 
        - ls -l ${PWD}
