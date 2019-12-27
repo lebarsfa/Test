@@ -31,7 +31,7 @@ jobs:
      services:
        - docker
      script:
-       - "docker run -i -v \"${PWD}:/MyProgram\" daald/ubuntu32:trusty /bin/bash -c \"linux32 --32bit i386 ls -l\""
+       - "docker run -i -v \"${PWD}:/MyProgram\" daald/ubuntu32:trusty /bin/bash -c \"linux32 --32bit i386 ls -l /MyProgram\""
 #     deploy:
 #       <<: *deploy_base
 #       file:
