@@ -1,63 +1,76 @@
-language: cpp
+sudo: required
+services:
+- docker
+language: bash
+script:
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# build image
+- docker build -t hypriot/rpi-mysql .
+# test image
+- docker run hypriot/rpi-mysql mysql --version
 
-# https://github.com/electron-userland/electron-builder/issues/3559
-if: tag IS blank
 
-env:
-      # https://github.com/electron-userland/electron-builder/issues/3559
-    - TRAVIS_TAG="autotagname"
-
-deploy: &deploy_base
-    provider: releases
-#    name: ${TRAVIS_TAG}
-    tag_name: ${TRAVIS_TAG}
-#    target_commitish: master
-    body: "    One paragraph only"
-    api_key:
-        secure: XswJJhiDn1DDUMmivWdj/Mfz6IzHexWRgMZoVmcM2gEB9/P8XUgHPL5dpmo+Ep81ILM4Niug7XBE4+EmAMAV/5pPclxfLM47jhBXciG0UQA6BgANI0s630qqVP3/KWh8cxeA3YV87jyf5fvEPwo8KaiNfOIxnVeHraeOjfGPYXPWSHXzTvcz99ZeJMIyk3006PSGPNEhMUbKm6k/eYnJsfQnUIgq6nICRMiGxfhDrh5mVwW9xIDKDqc3vpm6d00pCMmrjbG9c6rh8UD0lfXHV4vs8gDJh1+sK+D2EnPIYKOmjRqb4m8RAnAkd/NBoBenLYPWJgazOziID8P58fcElxttBouMPz3bYbsOize4gPk1KZniKbHVtn+aqQ5fOIiDOv7TyyZRS5Barln8xfOPZje1R/EgdiSj0PabvyhSf/hemRJMCi0yJ7tUklLvIZqPCz76uN9uPAzmWtwisGYiYeJXV5ZffLZeY7Yo4xxVir00mSWZWO3qPnwZlku4T3rLFST5emx4kxsFCfGaicaMjn/YQ4m+ZWXpL5dxgR6IHSKEROK50TqZWA1vb+YH58Zg5xkrd5+4bFALrlE5pA61LDET06nM+m5IjIFurALodi6uHKISfD8yiynCQMFbcNFf+mVroJf1ATlk32GFDakgmXbgtSlmVwUOAYDUtIqMqi8=
-    skip_cleanup: true
-    overwrite: true
-    draft: true
-    prerelease: true
-#        on:
-#           tags: true
-
-jobs:
-  include:
-   - name: "Ubuntu"
-     os: linux
-     dist: bionic
-     compiler: gcc
-     services:
-       - docker
-     before_install: 
-       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-     script:
-       - "docker run -i -v \"${PWD}:/repo\" hypriot/rpi-mysql /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
-       - ls -l ${PWD}
-     deploy:
-       <<: *deploy_base
-       file:
-            - Hello
-
-#   - name: "Windows"
-#     os: windows
-#     install:
-##       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
-##       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --includeRecommended --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --add Microsoft.VisualStudio.Component.WinXP
-#       - start //w setupvs.bat
-#       - cat out.log
-#     script: 
-#       - cmd //c "cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
+#language: cpp
+#
+## https://github.com/electron-userland/electron-builder/issues/3559
+#if: tag IS blank
+#
+#env:
+#      # https://github.com/electron-userland/electron-builder/issues/3559
+#    - TRAVIS_TAG="autotagname"
+#
+#deploy: &deploy_base
+#    provider: releases
+##    name: ${TRAVIS_TAG}
+#    tag_name: ${TRAVIS_TAG}
+##    target_commitish: master
+#    body: "    One paragraph only"
+#    api_key:
+#        secure: XswJJhiDn1DDUMmivWdj/Mfz6IzHexWRgMZoVmcM2gEB9/P8XUgHPL5dpmo+Ep81ILM4Niug7XBE4+EmAMAV/5pPclxfLM47jhBXciG0UQA6BgANI0s630qqVP3/KWh8cxeA3YV87jyf5fvEPwo8KaiNfOIxnVeHraeOjfGPYXPWSHXzTvcz99ZeJMIyk3006PSGPNEhMUbKm6k/eYnJsfQnUIgq6nICRMiGxfhDrh5mVwW9xIDKDqc3vpm6d00pCMmrjbG9c6rh8UD0lfXHV4vs8gDJh1+sK+D2EnPIYKOmjRqb4m8RAnAkd/NBoBenLYPWJgazOziID8P58fcElxttBouMPz3bYbsOize4gPk1KZniKbHVtn+aqQ5fOIiDOv7TyyZRS5Barln8xfOPZje1R/EgdiSj0PabvyhSf/hemRJMCi0yJ7tUklLvIZqPCz76uN9uPAzmWtwisGYiYeJXV5ZffLZeY7Yo4xxVir00mSWZWO3qPnwZlku4T3rLFST5emx4kxsFCfGaicaMjn/YQ4m+ZWXpL5dxgR6IHSKEROK50TqZWA1vb+YH58Zg5xkrd5+4bFALrlE5pA61LDET06nM+m5IjIFurALodi6uHKISfD8yiynCQMFbcNFf+mVroJf1ATlk32GFDakgmXbgtSlmVwUOAYDUtIqMqi8=
+#    skip_cleanup: true
+#    overwrite: true
+#    draft: true
+#    prerelease: true
+##        on:
+##           tags: true
+#
+#jobs:
+#  include:
+#   - name: "Ubuntu"
+#     os: linux
+#     dist: bionic
+#     compiler: gcc
+#     services:
+#       - docker
+#     before_install: 
+#       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#     script:
+#       - "docker run -i -v \"${PWD}:/repo\" hypriot/rpi-mysql /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
+#       - ls -l ${PWD}
 #     deploy:
 #       <<: *deploy_base
 #       file:
-#            - Release\Hello.exe
-#     after_deploy:
-##       - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
-#       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
-#       - df
-##       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --remove Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --remove Microsoft.VisualStudio.Component.WinXP
-#       - rm -Rf "/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
-#       - df
+#            - Hello
 #
+##   - name: "Windows"
+##     os: windows
+##     install:
+###       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
+###       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --includeRecommended --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --add Microsoft.VisualStudio.Component.WinXP
+##       - start //w setupvs.bat
+##       - cat out.log
+##     script: 
+##       - cmd //c "cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
+##     deploy:
+##       <<: *deploy_base
+##       file:
+##            - Release\Hello.exe
+##     after_deploy:
+###       - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
+##       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
+##       - df
+###       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --remove Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --remove Microsoft.VisualStudio.Component.WinXP
+##       - rm -Rf "/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
+##       - df
+##
