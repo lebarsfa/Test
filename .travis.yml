@@ -31,7 +31,7 @@ jobs:
      services:
        - docker
      script:
-       - docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c "linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello"
+       - docker run -i -v \"${PWD}:/repo\" i386/ubuntu:xenial /bin/bash -c \"linux32 --32bit i386 uname -a && cd /repo && mkdir -p tst && ls -l && apt-get update && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \"
        - ls -l ${PWD}
      deploy:
        <<: *deploy_base
