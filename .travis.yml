@@ -8,7 +8,7 @@ script:
 # build image
 - docker build -t resin/rpi-raspbian .
 # test image
-- docker run resin/rpi-raspbian /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
+- "docker run resin/rpi-raspbian /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
 - ls -l ${PWD}
 
 #language: cpp
