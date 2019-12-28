@@ -29,19 +29,21 @@ jobs:
      dist: bionic
      compiler: gcc
      services:
+       - xvfb
        - docker
      before_install: 
        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-#       - docker build -t resin/rpi-raspbian .
+       - xhost +local:$(id -un)
      script:
-         #docker run -i balenalib/rpi-raspbian:buster /bin/bash -c "uname -a && ls -l /opt && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb xauth && lsb_release -a"
-       - "docker run -i -v \"${PWD}:/repo\" balenalib/rpi-raspbian:buster /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb xauth && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
+         #docker run --net=host -e DISPLAY -i -v "${PWD}:/repo" lebarsfa/pi:buster /bin/bash -c "uname -a && cd /repo && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./DisplayImage image.png"
+#       - "docker run -i -v \"${PWD}:/repo\" balenalib/rpi-raspbian:buster /bin/bash -c \"uname -a && ls -l /opt && cd /repo && mkdir -p tst && ls -l && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb xauth && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
+       - "xvfb-run -a docker run -i --net=host -e DISPLAY -v \"${PWD}:/repo\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cd /repo && ls -l && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./DisplayImage image.png \""
        - ls -l ${PWD}
-     deploy:
-       <<: *deploy_base
-       file:
-            - Hello
-
+#     deploy:
+#       <<: *deploy_base
+#       file:
+#            - Hello
+#
 #   - name: "Windows"
 #     os: windows
 #     install:
