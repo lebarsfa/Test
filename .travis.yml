@@ -1,16 +1,3 @@
-#sudo: required
-#services:
-#- docker
-#language: bash
-#script:
-## prepare qemu
-#- docker run --rm --privileged multiarch/qemu-user-static:register --reset
-## build image
-#- docker build -t resin/rpi-raspbian .
-## test image
-#- "docker run -i -v \"${PWD}:/repo\" resin/rpi-raspbian /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
-#- ls -l ${PWD}
-#
 language: cpp
 
 # https://github.com/electron-userland/electron-builder/issues/3559
@@ -47,8 +34,8 @@ jobs:
        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #       - docker build -t resin/rpi-raspbian .
      script:
-         #sudo docker run -i  resin/rpi-raspbian /bin/bash -c "uname -a && ls -l && apt-get -q update || true && apt-get -y install cmake"
-       - "docker run -i -v \"${PWD}:/repo\" resin/rpi-raspbian /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
+         #docker run -i balenalib/rpi-raspbian:buster /bin/bash -c "uname -a && ls -l /opt && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb && lsb_release -a"
+       - "docker run -i -v \"${PWD}:/repo\" balenalib/rpi-raspbian:buster /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
        - ls -l ${PWD}
      deploy:
        <<: *deploy_base
