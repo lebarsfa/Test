@@ -45,8 +45,9 @@ jobs:
        - docker
      before_install: 
        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-       - docker build -t resin/rpi-raspbian .
+#       - docker build -t resin/rpi-raspbian .
      script:
+         #sudo docker run -i  resin/rpi-raspbian /bin/bash -c "uname -a && ls -l && apt-get -q update || true && apt-get -y install cmake"
        - "docker run -i -v \"${PWD}:/repo\" resin/rpi-raspbian /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update || true && apt-get -y install build-essential cmake && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./Hello \""
        - ls -l ${PWD}
      deploy:
