@@ -34,8 +34,8 @@ jobs:
        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #       - docker build -t resin/rpi-raspbian .
      script:
-         #docker run -i balenalib/rpi-raspbian:buster /bin/bash -c "uname -a && ls -l /opt && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb && lsb_release -a"
-       - "docker run -i -v \"${PWD}:/repo\" balenalib/rpi-raspbian:buster /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
+         #docker run -i balenalib/rpi-raspbian:buster /bin/bash -c "uname -a && ls -l /opt && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb xauth && lsb_release -a"
+       - "docker run -i -v \"${PWD}:/repo\" balenalib/rpi-raspbian:buster /bin/bash -c \"uname -a && cd /repo && mkdir -p tst && ls -l && apt-get -q update && apt-get -y install lsb-release build-essential cmake xvfb xauth && lsb_release -a && ls -l /opt && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./Hello \""
        - ls -l ${PWD}
      deploy:
        <<: *deploy_base
