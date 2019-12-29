@@ -36,7 +36,7 @@ jobs:
      script:
          #xhost +local:$(id -un)
          #docker run --net=host -e DISPLAY -i -v "${PWD}:/repo" lebarsfa/pi:buster /bin/bash -c "uname -a && cd /repo && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./DisplayImage image.png"
-       - "docker run -i -v \"${PWD}:${PWD}\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cd ${PWD} && ls -l && ls -l /opt && apt-get -q update && apt-get -y install lsb-release xvfb xauth build-essential cmake && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./DisplayImage image.png \""
+       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cd ${PWD} && mkdir ../tst && ls -l && ls -l .. && ls -l /opt && apt-get -q update && apt-get -y install lsb-release xvfb xauth build-essential cmake && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && xvfb-run -a ./DisplayImage image.png \""
        - ls -l ${PWD}
 #     deploy:
 #       <<: *deploy_base
