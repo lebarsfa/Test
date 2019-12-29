@@ -15,8 +15,10 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
+    printf("Display : %s\n", argv[1]);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
-    waitKey(0);
+    waitKey(1000);
+    getchar();
     return 0;
 }
