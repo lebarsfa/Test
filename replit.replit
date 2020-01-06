@@ -1,0 +1,2 @@
+language = "cpp"
+run = "cmake . && cmake --build . && ./Hello"
