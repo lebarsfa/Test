@@ -70,7 +70,6 @@ jobs:
        - cmd //c "del /f /q %SystemDrive%\qt-opensource-windows-x86-5.12.6.exe"
        - df
      script: 
-       - refreshenv
        - export PATH=/c/Qt/Qt5.12.6/Tools/mingw730_32/bin:$PATH
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
