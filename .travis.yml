@@ -1,68 +1,109 @@
 language: cpp
 
-# https://github.com/electron-userland/electron-builder/issues/3559
 if: tag IS blank
 
 env:
-      # https://github.com/electron-userland/electron-builder/issues/3559
     - TRAVIS_TAG="autotagname"
 
 deploy: &deploy_base
     provider: releases
-#    name: ${TRAVIS_TAG}
     tag_name: ${TRAVIS_TAG}
-#    target_commitish: master
-    body: "    One paragraph only"
     api_key:
         secure: XswJJhiDn1DDUMmivWdj/Mfz6IzHexWRgMZoVmcM2gEB9/P8XUgHPL5dpmo+Ep81ILM4Niug7XBE4+EmAMAV/5pPclxfLM47jhBXciG0UQA6BgANI0s630qqVP3/KWh8cxeA3YV87jyf5fvEPwo8KaiNfOIxnVeHraeOjfGPYXPWSHXzTvcz99ZeJMIyk3006PSGPNEhMUbKm6k/eYnJsfQnUIgq6nICRMiGxfhDrh5mVwW9xIDKDqc3vpm6d00pCMmrjbG9c6rh8UD0lfXHV4vs8gDJh1+sK+D2EnPIYKOmjRqb4m8RAnAkd/NBoBenLYPWJgazOziID8P58fcElxttBouMPz3bYbsOize4gPk1KZniKbHVtn+aqQ5fOIiDOv7TyyZRS5Barln8xfOPZje1R/EgdiSj0PabvyhSf/hemRJMCi0yJ7tUklLvIZqPCz76uN9uPAzmWtwisGYiYeJXV5ZffLZeY7Yo4xxVir00mSWZWO3qPnwZlku4T3rLFST5emx4kxsFCfGaicaMjn/YQ4m+ZWXpL5dxgR6IHSKEROK50TqZWA1vb+YH58Zg5xkrd5+4bFALrlE5pA61LDET06nM+m5IjIFurALodi6uHKISfD8yiynCQMFbcNFf+mVroJf1ATlk32GFDakgmXbgtSlmVwUOAYDUtIqMqi8=
     skip_cleanup: true
     overwrite: true
     draft: true
     prerelease: true
-#        on:
-#           tags: true
 
 jobs:
-  include:
-   - name: "Ubuntu"
+  include: 
+   - name: "Ubuntu 18.04"
      os: linux
      dist: bionic
      compiler: gcc
-     services:
-       - xvfb
-       - docker
      before_install: 
-       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-     script:
-         #xhost +local:$(id -un)
-         #docker run --net=host -e DISPLAY -i -v "${PWD}:/repo" lebarsfa/pi:buster-cv410 /bin/bash -c "uname -a && cat /etc/os-release && cd /repo && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && ./DisplayImage image.png"
-         #docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster-cv410 /bin/bash -c "uname -a && cat /etc/os-release && cd ${PWD} && mkdir -p ../tst && ls -l && ls -l .. && ls -l /opt && apt-get -q update && apt-get -y install lsb-release xvfb xauth build-essential cmake && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && echo wait 10 > run_test.txt && echo exit >> run_test.txt && cat run_test.txt | xvfb-run -a ./DisplayImage image.png"
-         #docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster-cv410 /bin/bash -c "uname -a && cat /etc/os-release && cd ${PWD} && mkdir -p ../tst && ls -l && ls -l .. && ls -l /opt && apt-get -q update && apt-get -y install lsb-release xvfb xauth build-essential cmake && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && { Xvfb :99 & echo X_starting && sleep 3 ; } && export DISPLAY=:99 && echo wait 10 > run_test.txt && echo exit >> run_test.txt && cat run_test.txt | ./DisplayImage image.png"
-       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster-cv410 /bin/bash -c \"uname -a && cat /etc/os-release && cd ${PWD} && mkdir -p ../tst && ls -l && ls -l .. && ls -l /opt && apt-get -q update && apt-get -y install lsb-release xvfb xauth build-essential cmake && lsb_release -a && cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build . && { Xvfb :99 & echo X_starting && sleep 3 ; } && export DISPLAY=:99 && echo wait 10 > run_test.txt && echo exit >> run_test.txt && cat run_test.txt | ./DisplayImage image.png \""
-       - ls -l ${PWD}
-#     deploy:
-#       <<: *deploy_base
-#       file:
-#            - Hello
-#
-#   - name: "Windows"
-#     os: windows
-#     install:
-##       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
-##       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --includeRecommended --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --add Microsoft.VisualStudio.Component.WinXP
-#       - start //w setupvs.bat
-#       - cat out.log
-#     script: 
-#       - cmd //c "cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target Hello --parallel & .\Release\Hello.exe"
-#     deploy:
-#       <<: *deploy_base
-#       file:
-#            - Release\Hello.exe
-#     after_deploy:
-##       - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
+       - sudo apt-get -q update || true
+       - sudo apt-get -y install flex bison || true
+       - df
+     script: 
+       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - cd ibex-lib
+       - mkdir build ; cd build
+       - cmake -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" ..
+       - cmake --build . --target install
+       - cd ../..
+       - git clone https://github.com/SimonRohou/tubex-lib
+       - cd tubex-lib 
+       - git submodule init ; git submodule update
+       - mkdir build ; cd build
+       - cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --target install
+       - cd ../..
+
+   - name: "Windows Qt 5.12.6 MinGW 7.3.0 x86"
+     os: windows
+     install: 
+       - choco uninstall -y mingw
+#       - choco install -y mingw --version=5.3.0 --allow-downgrade
+         # Need to free up disk space...
+#       - choco uninstall -y visualstudio2017-workload-webbuildtools visualstudio2017-workload-netcorebuildtools visualstudio2017-workload-vctools microsoft-build-tools
 #       - wget "https://aka.ms/vs/15/release/vs_buildtools.exe" -O vs_buildtools.exe
-#       - df
-##       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --remove Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --remove Microsoft.VisualStudio.Component.WinXP
-#       - rm -Rf "/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools"
-#       - df
-#
+#       - ./vs_buildtools.exe modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools" --passive --norestart --wait --remove Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP --remove Microsoft.VisualStudio.Component.WinXP --remove Microsoft.VisualStudio.Component.VC.CLI.Support
+       - df
+       - rm -Rf "/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools" || true
+       - df
+       - rm -Rf "/C/Program Files (x86)/Windows Kits" || true
+       - df
+       - rm -Rf "/C/Windows/SoftwareDistribution" || true
+       - df
+       - choco install -y winflexbison make git patch
+       - wget http://download.qt.io/archive/qt/5.12/5.12.6/qt-opensource-windows-x86-5.12.6.exe --no-check-certificate -nv
+       - cmd //c "move /Y qt-opensource-windows-x86-5.12.6.exe %SystemDrive%\ "
+       - wget http://www.ensta-bretagne.fr/lebars/Share/qt-installer-5.12.6-mingw73_32.qs --no-check-certificate -nv
+       - cmd //c "move /Y qt-installer-5.12.6-mingw73_32.qs %SystemDrive%\ "
+       - cmd //c netsh advfirewall set allprofiles state on
+       - cmd //c netsh advfirewall firewall add rule name="Qt offline installer" dir=out action=block program="%SystemDrive%\qt-opensource-windows-x86-5.12.6.exe" enable=yes
+         # Take several min...
+       - cmd //c "%SystemDrive%\qt-opensource-windows-x86-5.12.6.exe --script %SystemDrive%\qt-installer-5.12.6-mingw73_32.qs"
+       - cmd //c netsh advfirewall firewall del rule name="Qt offline installer"
+       - cmd //c netsh advfirewall set allprofiles state off
+       - cmd //c "del /f /q %SystemDrive%\qt-opensource-windows-x86-5.12.6.exe"
+         # PATH
+       - wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+       - cmd //c "7z x cmake_extra_tools.zip -o"%SystemDrive%" -y"
+       - cmd //c "%SystemDrive%\cmake_extra_tools\pathman /as C:\Qt\Qt5.12.6\5.12.6\mingw73_32\bin;C:/Qt/Qt5.12.6/Tools/mingw730_32\bin"
+       - df
+     script: 
+       - refreshenv
+       - export PATH=/c/Qt/Qt5.12.6/Tools/mingw730_32/bin:$PATH
+       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - cd ibex-lib
+       - mkdir build ; cd build
+       - cmake -G "MSYS Makefiles" -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" -D INTERVAL_LIB=filib ..
+       - cmake --build . --target install
+       - cd ../..
+       - git clone https://github.com/SimonRohou/tubex-lib
+       - cd tubex-lib 
+       - git submodule init ; git submodule update
+       - mkdir build ; cd build
+       - cmake -G "MSYS Makefiles" -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --target install
+       - cd ../..
+       # Test program and bundle...
+       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
+       - cmd //c "7z x tubex_test_win.zip -y"
+       - rm -Rf tubex_test_win.zip
+       - cd tubex_test_win
+       - rm -Rf ibex tubex
+       - mv ../ibex .
+       - mv ../tubex .
+       - cd ..
+       - 7z a -y tubex_test_win.zip tubex_test_win
+       - cd tubex_test_win/test
+       - cmake -G "MSYS Makefiles" -D CMAKE_BUILD_TYPE=Release .
+       - cmake --build .
+       - ./my_project.exe
+       - cd ../..
+     deploy:
+       <<: *deploy_base
+       file: tubex_test_win.zip
