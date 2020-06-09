@@ -63,7 +63,7 @@ jobs:
        - cmd //c "move /Y qt-installer-5.12.6-mingw73_32.qs %SystemDrive%\ "
        - cmd //c netsh advfirewall set allprofiles state on
        - cmd //c netsh advfirewall firewall add rule name="Qt offline installer" dir=out action=block program="%SystemDrive%\qt-opensource-windows-x86-5.12.6.exe" enable=yes
-         # Take several min...
+         # Take several min... 
        - cmd //c "%SystemDrive%\qt-opensource-windows-x86-5.12.6.exe --script %SystemDrive%\qt-installer-5.12.6-mingw73_32.qs"
        - cmd //c netsh advfirewall firewall del rule name="Qt offline installer"
        - cmd //c netsh advfirewall set allprofiles state off
