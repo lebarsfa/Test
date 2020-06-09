@@ -56,7 +56,7 @@ jobs:
        - df
        - rm -Rf "/C/Windows/SoftwareDistribution" || true
        - df
-       - choco install -y winflexbison make git patch
+       - choco install -y winflexbison make patch
        - wget http://download.qt.io/archive/qt/5.12/5.12.6/qt-opensource-windows-x86-5.12.6.exe --no-check-certificate -nv
        - cmd //c "move /Y qt-opensource-windows-x86-5.12.6.exe %SystemDrive%\ "
        - wget http://www.ensta-bretagne.fr/lebars/Share/qt-installer-5.12.6-mingw73_32.qs --no-check-certificate -nv
