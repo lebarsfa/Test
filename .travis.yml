@@ -43,19 +43,12 @@ jobs:
        - unzip -q -o tubex_test_win.zip
        - rm -Rf tubex_test_win.zip
        - cd tubex_test_win
-       - rm -Rf ibex tubex ReadMe.txt
-       - mv ../ibex .
-       - mv ../tubex .
-       - cd ..
-       - zip -r tubex_test_ubuntu_bionic.zip tubex_test_win
-       - cd tubex_test_win/test
+       - mv test ..
+       - cd ../test
+       - rm -Rf ../tubex_test_win
        - cmake .
        - cmake --build .
        - ./my_project.exe
-       - cd ../..
-     deploy:
-       <<: *deploy_base
-       file: tubex_test_ubuntu_bionic.zip
 
    - name: "Windows Visual Studio 2017 x86"
      os: windows
@@ -65,7 +58,7 @@ jobs:
        - choco uninstall -y cmake.install
        - wget https://cmake.org/files/v3.15/cmake-3.15.5-win32-x86.msi --no-check-certificate -nv
        - cmd //c "cmake-3.15.5-win32-x86.msi /qb-! /norestart ALLUSERS=1"
-       - cmd //c "refreshenv.cmd
+       - cmd //c "refreshenv.cmd"
      script: 
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
