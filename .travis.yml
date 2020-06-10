@@ -48,7 +48,7 @@ jobs:
        - rm -Rf ../tubex_test_win
        - cmake .
        - cmake --build .
-       - ./my_project.exe
+       - ./my_project
 
    - name: "Windows Visual Studio 2017 x86"
      os: windows
@@ -62,7 +62,7 @@ jobs:
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmd //c "refreshenv.cmd & cmake -G "Visual Studio 15" -A Win32 -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" -D INTERVAL_LIB=filib .."
+       - cmd //c "refreshenv.cmd & cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS="/D WIN32" -D CMAKE_C_FLAGS="/D WIN32" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib .."
        - cmd //c "refreshenv.cmd & cmake --build . --config Release --target install"
        - cd ../..
        - git clone -b dev https://github.com/lebarsfa/tubex-lib
