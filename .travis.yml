@@ -59,6 +59,8 @@ jobs:
 
    - name: "Windows Visual Studio 2017 x86"
      os: windows
+     before_install: 
+       - choco install -y winflexbison
      script: 
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
