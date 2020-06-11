@@ -58,7 +58,7 @@ jobs:
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS="/D WIN32" -D CMAKE_C_FLAGS="/D WIN32" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
        - git clone -b dev https://github.com/lebarsfa/tubex-lib
@@ -77,7 +77,7 @@ jobs:
        - mv ../ibex .
        - mv ../tubex .
        - cd ..
-       - 7z a -y tubex_test_win_vc15.zip tubex_test_win
+       - 7z a -y tubex_test_x86_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A Win32 .
        - cmake --build . --config Release
@@ -85,7 +85,44 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_win_vc15.zip
+       file: tubex_test_x86_vc15.zip
+
+   - name: "Windows Visual Studio 2017 x64"
+     os: windows
+     before_install: 
+       - choco install -y winflexbison
+     script: 
+       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - cd ibex-lib
+       - mkdir build ; cd build
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake --build . --config Release --target install
+       - cd ../..
+       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - cd tubex-lib 
+       - git submodule init ; git submodule update
+       - mkdir build ; cd build
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --config Release --target install
+       - cd ../..
+       # Test program and bundle...
+       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
+       - 7z x tubex_test_win.zip -y
+       - rm -Rf tubex_test_win.zip
+       - cd tubex_test_win
+       - rm -Rf ibex tubex ReadMe.txt
+       - mv ../ibex .
+       - mv ../tubex .
+       - cd ..
+       - 7z a -y tubex_test_x64_vc15.zip tubex_test_win
+       - cd tubex_test_win/test
+       - cmake -G "Visual Studio 15" -A x64 .
+       - cmake --build . --config Release
+       - cmd //c "Release\my_project.exe"
+       - cd ../..
+     deploy:
+       <<: *deploy_base
+       file: tubex_test_x64_vc15.zip
 
    - name: "Windows Qt 5.12.6 MinGW 7.3.0 x86"
      os: windows
@@ -136,7 +173,7 @@ jobs:
        - mv ../ibex .
        - mv ../tubex .
        - cd ..
-       - 7z a -y tubex_test_win_mingw7.zip tubex_test_win
+       - 7z a -y tubex_test_x86_mingw7.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "MSYS Makefiles" .
        - cmake --build .
@@ -144,4 +181,41 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_win_mingw7.zip
+       file: tubex_test_x86_mingw7.zip
+
+   - name: "Windows MinGW 8.1.0 x64"
+     os: windows
+     before_install: 
+       - choco install -y winflexbison make patch
+     script: 
+       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - cd ibex-lib
+       - mkdir build ; cd build
+       - cmake -G "MSYS Makefiles" -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" -D INTERVAL_LIB=filib ..
+       - cmake --build . --target install
+       - cd ../..
+       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - cd tubex-lib 
+       - git submodule init ; git submodule update
+       - mkdir build ; cd build
+       - cmake -G "MSYS Makefiles" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --target install
+       - cd ../..
+       # Test program and bundle...
+       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
+       - 7z x tubex_test_win.zip -y
+       - rm -Rf tubex_test_win.zip
+       - cd tubex_test_win
+       - rm -Rf ibex tubex
+       - mv ../ibex .
+       - mv ../tubex .
+       - cd ..
+       - 7z a -y tubex_test_x64_mingw8.zip tubex_test_win
+       - cd tubex_test_win/test
+       - cmake -G "MSYS Makefiles" .
+       - cmake --build .
+       - ./my_project.exe
+       - cd ../..
+     deploy:
+       <<: *deploy_base
+       file: tubex_test_x64_mingw8.zip
