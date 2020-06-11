@@ -54,27 +54,19 @@ jobs:
      os: windows
      before_install: 
        - choco install -y winflexbison
-         # Use x86 CMake version...
-       - choco uninstall -y cmake.install
-       - wget https://cmake.org/files/v3.15/cmake-3.15.5-win32-x86.msi --no-check-certificate -nv
-       - cmd //c "cmake-3.15.5-win32-x86.msi /qb-! /norestart ALLUSERS=1"
-         # PATH
-       - wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
-       - cmd //c "7z x cmake_extra_tools.zip -o"%SystemDrive%" -y"
-       - cmd //c "%SystemDrive%\cmake_extra_tools\pathman /as C:\Progra~2\CMake\bin"
      script: 
        - git clone -b develop https://github.com/ibex-team/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmd //c "refreshenv.cmd & cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS="/D WIN32" -D CMAKE_C_FLAGS="/D WIN32" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib .."
-       - cmd //c "refreshenv.cmd & cmake --build . --config Release --target install"
+       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS="/D WIN32" -D CMAKE_C_FLAGS="/D WIN32" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake --build . --config Release --target install
        - cd ../..
        - git clone -b dev https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmd //c "refreshenv.cmd & cmake -G "Visual Studio 15" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" .."
-       - cmd //c "refreshenv.cmd & cmake --build . --config Release --target install"
+       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --config Release --target install
        - cd ../..
        # Test program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -87,8 +79,8 @@ jobs:
        - cd ..
        - 7z a -y tubex_test_win_vc15.zip tubex_test_win
        - cd tubex_test_win/test
-       - cmd //c "refreshenv.cmd & cmake -G "Visual Studio 15" -A Win32 ."
-       - cmd //c "refreshenv.cmd & cmake --build . --config Release"
+       - cmake -G "Visual Studio 15" -A Win32 .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
