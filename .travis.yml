@@ -238,42 +238,43 @@ jobs:
        <<: *deploy_base
        file: tubex_test_x64_vc14.zip
 
-   - name: "Windows Visual Studio 2013 x86"
-     os: windows
-     before_install: 
-       - choco install -y microsoft-build-tools-2013 winflexbison
-     script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
-       - cd ibex-lib
-       - mkdir build ; cd build
-       - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
-       - cmake --build . --config Release --target install
-       - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
-       - cd tubex-lib 
-       - git submodule init ; git submodule update
-       - mkdir build ; cd build
-       - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
-       - cd ../..
-       # Test program and bundle...
-       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
-       - 7z x tubex_test_win.zip -y
-       - rm -Rf tubex_test_win.zip
-       - cd tubex_test_win
-       - rm -Rf ibex tubex ReadMe.txt
-       - mv ../ibex .
-       - mv ../tubex .
-       - cd ..
-       - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
-       - cd tubex_test_win/test
-       - cmake -G "Visual Studio 12" -A Win32 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
-       - cd ../..
-     deploy:
-       <<: *deploy_base
-       file: tubex_test_x86_vc12.zip
+#   - name: "Windows Visual Studio 2013 x86"
+#     os: windows
+#     before_install: 
+#       # Missing tools...
+#       - choco install -y microsoft-build-tools-2013 winflexbison
+#    script: 
+#      - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+#      - cd ibex-lib
+#      - mkdir build ; cd build
+#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D noexcept=_NOEXCEPT" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D noexcept=_NOEXCEPT" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+#      - cmake --build . --config Release --target install
+#      - cd ../..
+#      - git clone -b dev https://github.com/lebarsfa/tubex-lib
+#      - cd tubex-lib 
+#      - git submodule init ; git submodule update
+#      - mkdir build ; cd build
+#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+#      - cmake --build . --config Release --target install
+#      - cd ../..
+#      # Test program and bundle...
+#      - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
+#      - 7z x tubex_test_win.zip -y
+#      - rm -Rf tubex_test_win.zip
+#      - cd tubex_test_win
+#      - rm -Rf ibex tubex ReadMe.txt
+#      - mv ../ibex .
+#      - mv ../tubex .
+#      - cd ..
+#      - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
+#      - cd tubex_test_win/test
+#      - cmake -G "Visual Studio 12" -A Win32 .
+#      - cmake --build . --config Release
+#      - cmd //c "Release\my_project.exe"
+#      - cd ../..
+#    deploy:
+#      <<: *deploy_base
+#      file: tubex_test_x86_vc12.zip
 
    - name: "Windows Qt 5.12.6 MinGW 7.3.0 x86"
      os: windows
