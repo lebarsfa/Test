@@ -25,20 +25,20 @@ jobs:
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
        - cmake -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" ..
        - cmake --build . --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
        - cmake --build . --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - unzip -q -o tubex_test_win.zip
        - rm -Rf tubex_test_win.zip
@@ -59,26 +59,26 @@ jobs:
      before_install: 
        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
      script: 
-       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake git flex bison && lsb_release -a && git clone -b develop https://github.com/ibex-team/ibex-lib.git && cd ibex-lib && mkdir build ; cd build && cmake -D CMAKE_INSTALL_PREFIX=../../ibex -D CMAKE_CXX_FLAGS=-fPIC -D CMAKE_C_FLAGS=-fPIC -D INTERVAL_LIB=filib .. && cmake --build . --target install && cd ../.. && git clone -b dev https://github.com/lebarsfa/tubex-lib && cd tubex-lib && git submodule init ; git submodule update && mkdir build ; cd build && cmake -D CMAKE_PREFIX_PATH=../ibex -D CMAKE_INSTALL_PREFIX=../../tubex .. && cmake --build . --target install && cd ../.. && wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip && unzip -q -o tubex_test_win.zip && rm -Rf tubex_test_win.zip && cd tubex_test_win && mv test .. && cd ../test && rm -Rf ../tubex_test_win && cmake . && cmake --build . && ./my_project \""
+       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake git flex bison && lsb_release -a && git clone -b develop https://github.com/lebarsfa/ibex-lib.git && cd ibex-lib && mkdir build ; cd build && cmake -D CMAKE_INSTALL_PREFIX=../../ibex -D CMAKE_CXX_FLAGS=-fPIC -D CMAKE_C_FLAGS=-fPIC -D INTERVAL_LIB=filib .. && cmake --build . --target install && cd ../.. && git clone -b windows https://github.com/lebarsfa/tubex-lib && cd tubex-lib && git submodule init ; git submodule update && mkdir build ; cd build && cmake -D CMAKE_PREFIX_PATH=../ibex -D CMAKE_INSTALL_PREFIX=../../tubex .. && cmake --build . --target install && cd ../.. && wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip && unzip -q -o tubex_test_win.zip && rm -Rf tubex_test_win.zip && cd tubex_test_win && mv test .. && cd ../test && rm -Rf ../tubex_test_win && cmake . && cmake --build . && ./my_project \""
 
    - name: "Mac OS Xcode 10.1"
      os: osx
      osx_image: xcode10.1
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
        - cmake -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC -Wno-everything" -D CMAKE_C_FLAGS="-fPIC -Wno-everything" ..
        - cmake --build . --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
        - cmake --build . --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - unzip -q -o tubex_test_win.zip
        - rm -Rf tubex_test_win.zip
@@ -95,20 +95,20 @@ jobs:
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake --build . --config Debug --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -120,8 +120,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A Win32 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -132,20 +132,20 @@ jobs:
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "Visual Studio 16" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake --build . --config Debug --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -157,8 +157,8 @@ jobs:
        - 7z a -y tubex_test_x64_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A x64 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -169,20 +169,20 @@ jobs:
      before_install: 
        - choco install -y winflexbison
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake -G "Visual Studio 15" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake --build . --config Debug --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -194,8 +194,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A Win32 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -204,22 +204,30 @@ jobs:
    - name: "Windows Visual Studio 2017 x64"
      os: windows
      before_install: 
-       - choco install -y winflexbison
+       - cmd //c "choco install -y winflexbison doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - export PATH=/c/Python37:/c/Python37/Scripts:$PATH
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
+       - cmake --build . --config Debug --target api
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
+       - cmake --build . --config Debug --target install
+       - cmake --build . --config Debug --target pip_package
+       # Test python program and wheel...
+       - cp *.whl tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
+       - pip install tubex_lib-cp37-cp37m-win_amd64.whl
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -231,32 +239,34 @@ jobs:
        - 7z a -y tubex_test_x64_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A x64 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x64_vc15.zip
+       file: 
+         - tubex_test_x64_vc15.zip
+         - tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
 
    - name: "Windows Visual Studio 2015 x86"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake --build . --config Debug --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -268,8 +278,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A Win32 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -280,20 +290,20 @@ jobs:
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
        - cmake --build . --config Release --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "Visual Studio 14" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-       - cmake --build . --config Release --target install
+       - cmake --build . --config Debug --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -305,8 +315,8 @@ jobs:
        - 7z a -y tubex_test_x64_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A x64 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
+       - cmake --build . --config Debug
+       - cmd //c "Debug\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -318,20 +328,20 @@ jobs:
 #       # Missing tools...
 #       - choco install -y microsoft-build-tools-2013 winflexbison
 #    script: 
-#      - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+#      - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
 #      - cd ibex-lib
 #      - mkdir build ; cd build
-#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D noexcept=_NOEXCEPT" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D noexcept=_NOEXCEPT" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
+#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305 /D noexcept=_NOEXCEPT" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305 /D noexcept=_NOEXCEPT" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
 #      - cmake --build . --config Release --target install
 #      - cd ../..
-#      - git clone -b dev https://github.com/lebarsfa/tubex-lib
+#      - git clone -b windows https://github.com/lebarsfa/tubex-lib
 #      - cd tubex-lib 
 #      - git submodule init ; git submodule update
 #      - mkdir build ; cd build
 #      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-#      - cmake --build . --config Release --target install
+#      - cmake --build . --config Debug --target install
 #      - cd ../..
-#      # Test program and bundle...
+#      # Test C++ program and bundle...
 #      - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
 #      - 7z x tubex_test_win.zip -y
 #      - rm -Rf tubex_test_win.zip
@@ -343,8 +353,8 @@ jobs:
 #      - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
 #      - cd tubex_test_win/test
 #      - cmake -G "Visual Studio 12" -A Win32 .
-#      - cmake --build . --config Release
-#      - cmd //c "Release\my_project.exe"
+#      - cmake --build . --config Debug
+#      - cmd //c "Debug\my_project.exe"
 #      - cd ../..
 #    deploy:
 #      <<: *deploy_base
@@ -377,20 +387,20 @@ jobs:
        - df
      script: 
        - export PATH=/c/Qt/Qt5.12.6/Tools/mingw730_32/bin:$PATH
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
        - cmake -G "MSYS Makefiles" -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" -D INTERVAL_LIB=filib ..
        - cmake --build . --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "MSYS Makefiles" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
        - cmake --build . --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
@@ -414,20 +424,20 @@ jobs:
      before_install: 
        - choco install -y winflexbison make patch
      script: 
-       - git clone -b develop https://github.com/ibex-team/ibex-lib.git
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
        - mkdir build ; cd build
        - cmake -G "MSYS Makefiles" -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" -D INTERVAL_LIB=filib ..
        - cmake --build . --target install
        - cd ../..
-       - git clone -b dev https://github.com/lebarsfa/tubex-lib
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
        - cmake -G "MSYS Makefiles" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
        - cmake --build . --target install
        - cd ../..
-       # Test program and bundle...
+       # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
        - 7z x tubex_test_win.zip -y
        - rm -Rf tubex_test_win.zip
