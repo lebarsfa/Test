@@ -57,7 +57,7 @@ jobs:
      before_install: 
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
-       - sudo apt-get -y install doxygen graphviz || true
+       - sudo apt-get -y install python3-pip doxygen graphviz || true
        - sudo pip3 install --upgrade pip
        - sudo pip3 install wheel pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
