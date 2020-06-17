@@ -224,7 +224,7 @@ jobs:
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
        - cp *.whl tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
-       - pip install tubex_lib-cp37-cp37m-win_amd64.whl
+       - pip install tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
