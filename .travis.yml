@@ -60,7 +60,8 @@ jobs:
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install python3.6 python3-setuptools python3-pip doxygen graphviz || true
-       - alias python3=python
+       # ???
+       - alias python3.8=python
        - sudo python3 -m pip install --upgrade pip
        - sudo pip3 install wheel pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
