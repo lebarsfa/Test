@@ -120,8 +120,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A Win32 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -157,8 +157,8 @@ jobs:
        - 7z a -y tubex_test_x64_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A x64 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -194,8 +194,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A Win32 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -239,8 +239,8 @@ jobs:
        - 7z a -y tubex_test_x64_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A x64 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -278,8 +278,8 @@ jobs:
        - 7z a -y tubex_test_x86_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A Win32 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -315,8 +315,8 @@ jobs:
        - 7z a -y tubex_test_x64_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A x64 .
-       - cmake --build . --config Debug
-       - cmd //c "Debug\my_project.exe"
+       - cmake --build .
+       - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
@@ -353,8 +353,8 @@ jobs:
 #      - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
 #      - cd tubex_test_win/test
 #      - cmake -G "Visual Studio 12" -A Win32 .
-#      - cmake --build . --config Debug
-#      - cmd //c "Debug\my_project.exe"
+#      - cmake --build .
+#      - cmd //c "Release\my_project.exe"
 #      - cd ../..
 #    deploy:
 #      <<: *deploy_base
