@@ -55,13 +55,14 @@ jobs:
      dist: bionic
      compiler: gcc
      language: python
-     python: 3.6
+     python: 3.8
      before_install: 
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
-       - sudo apt-get -y install python3.6 python3-setuptools python3-pip doxygen graphviz || true
-       # ???
-       - alias python3.8=python
+       - sudo apt-get -y install doxygen graphviz || true
+       - sudo apt-get -y install python3.8 || true
+       - sudo apt-get -y install python3-setuptools python3-pip || true
+       - sudo apt-get -y install python3.8-setuptools python3.8-pip || true
        - sudo python3 -m pip install --upgrade pip
        - sudo pip3 install wheel pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
@@ -87,7 +88,7 @@ jobs:
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp36-cp36m-ubuntu_bionic_x86_64.whl
        - pip install ../../tubex_lib-X.X.X-cp36-cp36m-ubuntu_bionic_x86_64.whl
-       - python ../examples/tuto/01_getting_started/01_getting_started.py || true
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -144,10 +145,12 @@ jobs:
        - cmake --build .
        - ./my_project
 
-   - name: "Windows Visual Studio 2019 x86 C++"
+   - name: "Windows Visual Studio 2019 x86 C++ Python 3.8"
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 --x86 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - export PATH=/c/Python38:/c/Python38/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -159,8 +162,15 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
+       - cmake --build . --config Debug --target api
+       - cmake -G "Visual Studio 16" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
        - cmake --build . --config Debug --target install
+       - cmake --build . --config Debug --target pip_package
+       # Test python program and wheel...
+       - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38m-win32.whl
+       - pip install ../../tubex_lib-X.X.X-cp38-cp38m-win32.whl
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -179,12 +189,16 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x86_vc16.zip
+       file: 
+         - tubex_test_x86_vc16.zip
+         - tubex_lib-X.X.X-cp38-cp38m-win32.whl
 
-   - name: "Windows Visual Studio 2019 x64 C++"
+   - name: "Windows Visual Studio 2019 x64 C++ Python 3.8"
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - export PATH=/c/Python38:/c/Python38/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -196,8 +210,15 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
+       - cmake --build . --config Debug --target api
+       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
        - cmake --build . --config Debug --target install
+       - cmake --build . --config Debug --target pip_package
+       # Test python program and wheel...
+       - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38m-win_amd64.whl
+       - pip install ../../tubex_lib-X.X.X-cp38-cp38m-win_amd64.whl
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -216,7 +237,9 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x64_vc16.zip
+       file: 
+         - tubex_test_x64_vc16.zip
+         - tubex_lib-X.X.X-cp38-cp38m-win_amd64.whl
 
    - name: "Windows Visual Studio 2017 x86 C++"
      os: windows
@@ -280,7 +303,7 @@ jobs:
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
        - pip install ../../tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
-       - python ../examples/tuto/01_getting_started/01_getting_started.py || true
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -328,7 +351,7 @@ jobs:
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp36-cp36m-win32.whl
        - pip install ../../tubex_lib-X.X.X-cp36-cp36m-win32.whl
-       - python ../examples/tuto/01_getting_started/01_getting_started.py || true
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -342,7 +365,7 @@ jobs:
        - 7z a -y tubex_test_x86_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A Win32 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
@@ -376,7 +399,7 @@ jobs:
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
        - pip install ../../tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
-       - python ../examples/tuto/01_getting_started/01_getting_started.py || true
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
