@@ -204,7 +204,8 @@ jobs:
    - name: "Windows Visual Studio 2017 x64"
      os: windows
      before_install: 
-       - cmd //c "choco install -y winflexbison doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - choco install -y winflexbison
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python37:/c/Python37/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -289,6 +290,8 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.5.4.20200110 & refreshenv.cmd & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - export PATH=/c/Python35:/c/Python35/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -300,8 +303,15 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
+       - cmake --build . --config Debug --target api
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
        - cmake --build . --config Debug --target install
+       - cmake --build . --config Debug --target pip_package
+       # Test python program and wheel...
+       - cp *.whl tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
+       - pip install tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
        - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
@@ -320,7 +330,9 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x64_vc14.zip
+       file: 
+         - tubex_test_x64_vc14.zip
+         - tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
 
 #   - name: "Windows Visual Studio 2013 x86"
 #     os: windows
