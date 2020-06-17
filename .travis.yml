@@ -50,16 +50,59 @@ jobs:
        - cmake --build .
        - ./my_project
 
-   - name: "Raspbian Buster pi Docker"
+   - name: "Ubuntu 18.04 C++ Python"
      os: linux
      dist: bionic
      compiler: gcc
-     services:
-       - docker
      before_install: 
-       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+       - sudo apt-get -q update || true
+       - sudo apt-get -y install flex bison || true
      script: 
-       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake git flex bison && lsb_release -a && git clone -b develop https://github.com/lebarsfa/ibex-lib.git && cd ibex-lib && mkdir build ; cd build && cmake -D CMAKE_INSTALL_PREFIX=../../ibex -D CMAKE_CXX_FLAGS=-fPIC -D CMAKE_C_FLAGS=-fPIC -D INTERVAL_LIB=filib .. && cmake --build . --target install && cd ../.. && git clone -b windows https://github.com/lebarsfa/tubex-lib && cd tubex-lib && git submodule init ; git submodule update && mkdir build ; cd build && cmake -D CMAKE_PREFIX_PATH=../ibex -D CMAKE_INSTALL_PREFIX=../../tubex .. && cmake --build . --target install && cd ../.. && wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip && unzip -q -o tubex_test_win.zip && rm -Rf tubex_test_win.zip && cd tubex_test_win && mv test .. && cd ../test && rm -Rf ../tubex_test_win && cmake . && cmake --build . && ./my_project \""
+       - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
+       - cd ibex-lib
+       - mkdir build ; cd build
+       - cmake -D CMAKE_INSTALL_PREFIX="../../ibex" -D CMAKE_CXX_FLAGS="-fPIC" -D CMAKE_C_FLAGS="-fPIC" ..
+       - cmake --build . --target install
+       - cd ../..
+       - git clone -b windows https://github.com/lebarsfa/tubex-lib
+       - cd tubex-lib 
+       - git submodule init ; git submodule update
+       - mkdir build ; cd build
+       - cmake -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D CMAKE_BUILD_TYPE=Debug -D WITH_PYTHON=ON ..
+       - cmake --build . --target api
+       - cmake -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D CMAKE_BUILD_TYPE=Debug -D WITH_PYTHON=ON ..
+       - cmake --build . --target install
+       - cmake --build . --target pip_package
+       # Test python program and wheel...
+       - cp *.whl tubex_lib-X.X.X-cp36-cp36m-ubuntu_bionic_x86_64.whl
+       - pip install tubex_lib-X.X.X-cp36-cp36m-ubuntu_bionic_x86_64.whl
+       - python ../examples/tuto/01_getting_started/01_getting_started.py
+       - cd ../..
+       # Test C++ program and bundle...
+       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
+       - unzip -q -o tubex_test_win.zip
+       - rm -Rf tubex_test_win.zip
+       - cd tubex_test_win
+       - mv test ..
+       - cd ../test
+       - rm -Rf ../tubex_test_win
+       - cmake .
+       - cmake --build .
+       - ./my_project
+     deploy:
+       <<: *deploy_base
+       file: tubex_lib-X.X.X-cp36-cp36m-ubuntu_bionic_x86_64.whl
+
+#   - name: "Raspbian Buster pi Docker"
+#     os: linux
+#     dist: bionic
+#     compiler: gcc
+#     services:
+#       - docker
+#     before_install: 
+#       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#     script: 
+#       - "docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake git flex bison && lsb_release -a && git clone -b develop https://github.com/lebarsfa/ibex-lib.git && cd ibex-lib && mkdir build ; cd build && cmake -D CMAKE_INSTALL_PREFIX=../../ibex -D CMAKE_CXX_FLAGS=-fPIC -D CMAKE_C_FLAGS=-fPIC -D INTERVAL_LIB=filib .. && cmake --build . --target install && cd ../.. && git clone -b windows https://github.com/lebarsfa/tubex-lib && cd tubex-lib && git submodule init ; git submodule update && mkdir build ; cd build && cmake -D CMAKE_PREFIX_PATH=../ibex -D CMAKE_INSTALL_PREFIX=../../tubex .. && cmake --build . --target install && cd ../.. && wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip && unzip -q -o tubex_test_win.zip && rm -Rf tubex_test_win.zip && cd tubex_test_win && mv test .. && cd ../test && rm -Rf ../tubex_test_win && cmake . && cmake --build . && ./my_project \""
 
    - name: "Mac OS Xcode 10.1"
      os: osx
@@ -90,7 +133,7 @@ jobs:
        - cmake --build .
        - ./my_project
 
-   - name: "Windows Visual Studio 2019 x86"
+   - name: "Windows Visual Studio 2019 x86 C++"
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
@@ -120,14 +163,14 @@ jobs:
        - 7z a -y tubex_test_x86_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A Win32 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
        file: tubex_test_x86_vc16.zip
 
-   - name: "Windows Visual Studio 2019 x64"
+   - name: "Windows Visual Studio 2019 x64 C++"
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
@@ -157,14 +200,14 @@ jobs:
        - 7z a -y tubex_test_x64_vc16.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 16" -A x64 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
        file: tubex_test_x64_vc16.zip
 
-   - name: "Windows Visual Studio 2017 x86"
+   - name: "Windows Visual Studio 2017 x86 C++"
      os: windows
      before_install: 
        - choco install -y winflexbison
@@ -194,14 +237,14 @@ jobs:
        - 7z a -y tubex_test_x86_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A Win32 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
        <<: *deploy_base
        file: tubex_test_x86_vc15.zip
 
-   - name: "Windows Visual Studio 2017 x64"
+   - name: "Windows Visual Studio 2017 x64 C++ Python 3.7"
      os: windows
      before_install: 
        - choco install -y winflexbison
@@ -240,7 +283,7 @@ jobs:
        - 7z a -y tubex_test_x64_vc15.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 15" -A x64 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
@@ -249,7 +292,7 @@ jobs:
          - tubex_test_x64_vc15.zip
          - tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
 
-   - name: "Windows Visual Studio 2015 x86"
+   - name: "Windows Visual Studio 2015 x86 C++"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
@@ -286,7 +329,7 @@ jobs:
        <<: *deploy_base
        file: tubex_test_x86_vc14.zip
 
-   - name: "Windows Visual Studio 2015 x64"
+   - name: "Windows Visual Studio 2015 x64 C++ Python 3.5"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
@@ -325,7 +368,7 @@ jobs:
        - 7z a -y tubex_test_x64_vc14.zip tubex_test_win
        - cd tubex_test_win/test
        - cmake -G "Visual Studio 14" -A x64 .
-       - cmake --build .
+       - cmake --build . --config Release
        - cmd //c "Release\my_project.exe"
        - cd ../..
      deploy:
@@ -334,7 +377,7 @@ jobs:
          - tubex_test_x64_vc14.zip
          - tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
 
-#   - name: "Windows Visual Studio 2013 x86"
+#   - name: "Windows Visual Studio 2013 x86 C++"
 #     os: windows
 #     before_install: 
 #       # Missing tools...
@@ -365,7 +408,7 @@ jobs:
 #      - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
 #      - cd tubex_test_win/test
 #      - cmake -G "Visual Studio 12" -A Win32 .
-#      - cmake --build .
+#      - cmake --build . --config Release
 #      - cmd //c "Release\my_project.exe"
 #      - cd ../..
 #    deploy:
