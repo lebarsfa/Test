@@ -60,6 +60,7 @@ jobs:
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install python3.6 python3-setuptools python3-pip doxygen graphviz || true
+       - alias python3=python
        - sudo python3 -m pip install --upgrade pip
        - sudo pip3 install wheel pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
@@ -305,7 +306,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8.20200110 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python36:/c/Python36/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
