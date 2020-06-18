@@ -61,15 +61,19 @@ jobs:
        - python3 --version
        - pip --version
        - pip3 --version
+       - sudo python --version
+       - sudo python3 --version
+       - sudo pip --version
+       - sudo pip3 --version
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install doxygen graphviz || true
-       - sudo pip install --upgrade pip wheel setuptools || true
-       - sudo pip install pyIbex
+       - pip install --upgrade pip wheel setuptools || true
+       - pip install pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
        - cd sphinx
-       - sudo pip install .
-       - sudo pip install sphinx-tabs breathe sphinx_rtd_theme
+       - pip install .
+       - pip install sphinx-tabs breathe sphinx_rtd_theme
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -88,7 +92,7 @@ jobs:
        - cmake --build . --target pip_package
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
-       - sudo pip install ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
+       - pip install ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
