@@ -62,7 +62,6 @@ jobs:
        - sudo apt-get -y install doxygen graphviz || true
        - sudo apt-get -y install python3.8 || true
        - sudo apt-get -y install python3-setuptools python3-pip || true
-       - sudo apt-get -y install python3.8-setuptools python3.8-pip || true
        - sudo python3 -m pip install --upgrade pip
        - sudo pip3 install wheel pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
@@ -87,7 +86,7 @@ jobs:
        - cmake --build . --target pip_package
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38m-ubuntubionic_x86_64.whl
-       - pip install ../../tubex_lib-X.X.X-cp38-cp38m-ubuntubionic_x86_64.whl
+       - pip3 install ../../tubex_lib-X.X.X-cp38-cp38m-ubuntubionic_x86_64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
@@ -497,7 +496,7 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "MSYS Makefiles" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
+       - cmake -G "MSYS Makefiles" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D CMAKE_BUILD_TYPE=Debug ..
        - cmake --build . --target install
        - cd ../..
        # Test C++ program and bundle...
