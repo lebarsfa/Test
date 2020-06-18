@@ -57,20 +57,19 @@ jobs:
      language: python
      python: 3.8
      before_install: 
+       - python --version
+       - python3 --version
+       - pip --version
+       - pip3 --version
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install doxygen graphviz || true
-       - sudo apt-get -y install python3.8 || true
-       - sudo apt-get -y install python3-setuptools python3-pip || true
-       - sudo python3 -m pip install --upgrade pip wheel setuptools || true
-       - sudo pip3 install --upgrade pip wheel setuptools || true
        - sudo pip install --upgrade pip wheel setuptools || true
-       - sudo python3.8 -m pip install --upgrade pip wheel setuptools
-       - sudo python3.8 -m pip install pyIbex
+       - sudo pip install pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
        - cd sphinx
-       - sudo python3.8 -m pip install .
-       - sudo python3.8 -m pip install sphinx-tabs breathe sphinx_rtd_theme
+       - sudo pip install .
+       - sudo pip install sphinx-tabs breathe sphinx_rtd_theme
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -89,7 +88,7 @@ jobs:
        - cmake --build . --target pip_package
        # Test python program and wheel...
        - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
-       - sudo python3.8 -m pip install ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
+       - sudo pip install ../../tubex_lib-X.X.X-cp38-cp38-ubuntubionic_x86_64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
