@@ -55,7 +55,7 @@ jobs:
      dist: bionic
      compiler: gcc
      language: python
-     python: 3.8
+     python: 3.6
      before_install: 
        - python --version || true
        - python3 --version || true
@@ -91,8 +91,8 @@ jobs:
        - cmake --build . --target install
        - cmake --build . --target pip_package
        # Test python program and wheel...
-       - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
-       - pip install ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
+       - cp *.whl ../../tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
+       - pip install ../../tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
@@ -108,7 +108,7 @@ jobs:
        - ./my_project
      deploy:
        <<: *deploy_base
-       file: tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
+       file: tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
 
 #   - name: "Raspbian Buster pi Docker"
 #     os: linux
@@ -370,7 +370,7 @@ jobs:
          - tubex_test_x86_vc14.zip
          - tubex_lib-X.X.X-cp36-cp36m-win32.whl
 
-   - name: "Windows Visual Studio 2015 x86 C++ Python 3.4"
+   - name: "Windows Visual Studio 2015 x86 Python 3.4"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
@@ -397,25 +397,9 @@ jobs:
        - pip install ../../tubex_lib-X.X.X-cp34-cp34m-win32.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
-       # Test C++ program and bundle...
-       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
-       - 7z x tubex_test_win.zip -y
-       - rm -Rf tubex_test_win.zip
-       - cd tubex_test_win
-       - rm -Rf ibex tubex ReadMe.txt
-       - mv ../ibex .
-       - mv ../tubex .
-       - cd ..
-       - 7z a -y tubex_test_x86_vc14.zip tubex_test_win
-       - cd tubex_test_win/test
-       - cmake -G "Visual Studio 14" -A Win32 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
-       - cd ../..
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x86_vc14.zip
          - tubex_lib-X.X.X-cp34-cp34m-win32.whl
 
    - name: "Windows Visual Studio 2015 x64 C++ Python 3.6"
@@ -466,7 +450,7 @@ jobs:
          - tubex_test_x64_vc14.zip
          - tubex_lib-X.X.X-cp36-cp36m-win_amd64.whl
 
-   - name: "Windows Visual Studio 2015 x64 C++ Python 3.5"
+   - name: "Windows Visual Studio 2015 x64 Python 3.5"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
@@ -493,28 +477,12 @@ jobs:
        - pip install ../../tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
-       # Test C++ program and bundle...
-       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
-       - 7z x tubex_test_win.zip -y
-       - rm -Rf tubex_test_win.zip
-       - cd tubex_test_win
-       - rm -Rf ibex tubex ReadMe.txt
-       - mv ../ibex .
-       - mv ../tubex .
-       - cd ..
-       - 7z a -y tubex_test_x64_vc14.zip tubex_test_win
-       - cd tubex_test_win/test
-       - cmake -G "Visual Studio 14" -A x64 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
-       - cd ../..
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x64_vc14.zip
          - tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
 
-   - name: "Windows Visual Studio 2015 x64 C++ Python 3.4"
+   - name: "Windows Visual Studio 2015 x64 Python 3.4"
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
@@ -541,25 +509,9 @@ jobs:
        - pip install ../../tubex_lib-X.X.X-cp34-cp34m-win_amd64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
-       # Test C++ program and bundle...
-       - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
-       - 7z x tubex_test_win.zip -y
-       - rm -Rf tubex_test_win.zip
-       - cd tubex_test_win
-       - rm -Rf ibex tubex ReadMe.txt
-       - mv ../ibex .
-       - mv ../tubex .
-       - cd ..
-       - 7z a -y tubex_test_x64_vc14.zip tubex_test_win
-       - cd tubex_test_win/test
-       - cmake -G "Visual Studio 14" -A x64 .
-       - cmake --build . --config Release
-       - cmd //c "Release\my_project.exe"
-       - cd ../..
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x64_vc14.zip
          - tubex_lib-X.X.X-cp34-cp34m-win_amd64.whl
 
 #   - name: "Windows Visual Studio 2013 x86 C++"
