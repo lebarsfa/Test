@@ -61,8 +61,10 @@ jobs:
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install doxygen graphviz || true
        - sudo apt-get -y install python3.8 || true
-       - sudo python3.8 -m pip install --upgrade pip
-       - sudo python3.8 -m pip install wheel pyIbex
+       - sudo apt-get -y install python3-setuptools python3-pip || true
+       - sudo python3 -m pip install --upgrade pip
+       - sudo python3.8 -m pip install --upgrade pip wheel setuptools
+       - sudo python3.8 -m pip install pyIbex
        - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
        - cd sphinx
        - sudo python3.8 -m pip install .
@@ -195,7 +197,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python38:/c/Python38/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -280,7 +282,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python37:/c/Python37/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -328,7 +330,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 --x86 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 --x86 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python36:/c/Python36/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -376,7 +378,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.5.4.20200110 & refreshenv.cmd & python -m pip install --upgrade pip & pip install wheel pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.5.4.20200110 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python35:/c/Python35/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
