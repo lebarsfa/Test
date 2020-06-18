@@ -55,7 +55,7 @@ jobs:
      dist: bionic
      compiler: gcc
      language: python
-     python: 3.6
+     python: 3.8
      before_install: 
        - python --version || true
        - python3 --version || true
@@ -91,8 +91,8 @@ jobs:
        - cmake --build . --target install
        - cmake --build . --target pip_package
        # Test python program and wheel...
-       - cp *.whl ../../tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
-       - pip install ../../tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
+       - cp *.whl ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
+       - pip install ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
        # Test C++ program and bundle...
@@ -108,7 +108,7 @@ jobs:
        - ./my_project
      deploy:
        <<: *deploy_base
-       file: tubex_lib-X.X.X-cp36-cp36-linux_x86_64.whl
+       file: tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
 
 #   - name: "Raspbian Buster pi Docker"
 #     os: linux
@@ -205,9 +205,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
+       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
+       - cmake -G "Visual Studio 16" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python38/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -291,9 +291,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
+       - cmake -G "Visual Studio 15" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python37/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -339,9 +339,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
+       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
+       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -387,9 +387,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
+       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
+       - cmake -G "Visual Studio 14" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -419,9 +419,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python36/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -467,9 +467,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python35/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
@@ -499,9 +499,9 @@ jobs:
        - cd tubex-lib 
        - git submodule init ; git submodule update
        - mkdir build ; cd build
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
        - cmake --build . --config Debug --target api
-       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -DWITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
+       - cmake -G "Visual Studio 14" -A x64 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305" -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" -D WITH_PYTHON=ON -D PYTHON_EXECUTABLE=/C/Python34/python.exe ..
        - cmake --build . --config Debug --target install
        - cmake --build . --config Debug --target pip_package
        # Test python program and wheel...
