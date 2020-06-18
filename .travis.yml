@@ -68,12 +68,20 @@ jobs:
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install doxygen graphviz || true
-       - pip install --upgrade pip wheel setuptools || true
-       - pip install pyIbex
-       - git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx
-       - cd sphinx
-       - pip install .
-       - pip install sphinx-tabs breathe sphinx_rtd_theme
+       #
+       #sudo apt-get -y install python3-setuptools python3-pip python3-wheel python3-breathe
+       #sudo pip3 install --upgrade pip
+       #sudo pip3 install --upgrade pyIbex
+       #
+       #sudo apt-get -y install python3.8-dev
+       #sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+       #sudo python -m pip install --upgrade pip
+       #sudo python -m pip install --upgrade pyIbex
+       #sudo python -m pip install --upgrade setuptools wheel
+       #
+       - pip install --upgrade pip
+       - pip install --upgrade pyIbex
+       - pip install --upgrade setuptools wheel
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
        - cd ibex-lib
@@ -91,9 +99,9 @@ jobs:
        - cmake --build . --target install
        - cmake --build . --target pip_package
        # Test python program and wheel...
-       #- cp *.whl ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
        - cp *.whl ../../
-       #- pip install ../../tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
+       #sudo pip3 install ../../*.whl
+       #sudo python -m pip install ../../*.whl
        - pip install ../../*.whl
        - python ../examples/tuto/01_getting_started/01_getting_started.py
        - cd ../..
@@ -110,7 +118,6 @@ jobs:
        - ./my_project
      deploy:
        <<: *deploy_base
-       #file: tubex_lib-X.X.X-cp38-cp38-linux_x86_64.whl
        file: "*.whl"
 
 #   - name: "Raspbian Buster pi Docker"
@@ -195,7 +202,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y visualstudio2019buildtools visualstudio2019-workload-vctools winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.8.3 & refreshenv.cmd & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-tabs sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python38:/c/Python38/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -281,7 +288,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.7.7 & refreshenv.cmd & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-tabs sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python37:/c/Python37/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -329,7 +336,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 --x86 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 --x86 & refreshenv.cmd & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-tabs sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python36:/c/Python36/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -377,7 +384,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.4.4.20200110 --x86 & refreshenv.cmd & set PATH=C:\Python34;C:\Python34\Scripts;%PATH% & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.4.4.20200110 --x86 & refreshenv.cmd & set PATH=C:\Python34;C:\Python34\Scripts;%PATH% & python -m pip install --upgrade pip==19.1.1 & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & refreshenv.cmd"
        - export PATH=/c/Python34:/c/Python34/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -409,7 +416,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.6.8 & refreshenv.cmd & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-tabs sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python36:/c/Python36/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -457,7 +464,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.5.4.20200110 & refreshenv.cmd & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.5.4.20200110 & refreshenv.cmd & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-tabs sphinx_rtd_theme & refreshenv.cmd"
        - export PATH=/c/Python35:/c/Python35/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -489,7 +496,7 @@ jobs:
      os: windows
      before_install: 
        - choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
-       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.4.4.20200110 & refreshenv.cmd & set PATH=C:\Python34;C:\Python34\Scripts;%PATH% & python -m pip install --upgrade pip wheel setuptools & pip install pyIbex & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install sphinx-tabs breathe sphinx_rtd_theme & refreshenv.cmd"
+       - cmd //c "choco install -y doxygen.install graphviz & choco install -y python --version=3.4.4.20200110 & refreshenv.cmd & set PATH=C:\Python34;C:\Python34\Scripts;%PATH% & python -m pip install --upgrade pip==19.1.1 & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & refreshenv.cmd"
        - export PATH=/c/Python34:/c/Python34/Scripts:$PATH
      script: 
        - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
@@ -516,44 +523,6 @@ jobs:
        <<: *deploy_base
        file: 
          - tubex_lib-X.X.X-cp34-cp34m-win_amd64.whl
-
-#   - name: "Windows Visual Studio 2013 x86 C++"
-#     os: windows
-#     before_install: 
-#       # Missing tools...
-#       - choco install -y microsoft-build-tools-2013 winflexbison
-#    script: 
-#      - git clone -b develop https://github.com/lebarsfa/ibex-lib.git
-#      - cd ibex-lib
-#      - mkdir build ; cd build
-#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_CXX_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305 /D noexcept=_NOEXCEPT" -D CMAKE_C_FLAGS=" /D WIN32 /EHsc /D _CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4305 /D noexcept=_NOEXCEPT" -D CMAKE_INSTALL_PREFIX="../../ibex" -D INTERVAL_LIB=filib ..
-#      - cmake --build . --config Release --target install
-#      - cd ../..
-#      - git clone -b windows https://github.com/lebarsfa/tubex-lib
-#      - cd tubex-lib 
-#      - git submodule init ; git submodule update
-#      - mkdir build ; cd build
-#      - cmake -G "Visual Studio 12" -A Win32 -D CMAKE_PREFIX_PATH="../ibex" -D CMAKE_INSTALL_PREFIX="../../tubex" ..
-#      - cmake --build . --config Debug --target install
-#      - cd ../..
-#      # Test C++ program and bundle...
-#      - wget http://www.ensta-bretagne.fr/lebars/Share/tubex_test_win.zip
-#      - 7z x tubex_test_win.zip -y
-#      - rm -Rf tubex_test_win.zip
-#      - cd tubex_test_win
-#      - rm -Rf ibex tubex ReadMe.txt
-#      - mv ../ibex .
-#      - mv ../tubex .
-#      - cd ..
-#      - 7z a -y tubex_test_x86_vc12.zip tubex_test_win
-#      - cd tubex_test_win/test
-#      - cmake -G "Visual Studio 12" -A Win32 .
-#      - cmake --build . --config Release
-#      - cmd //c "Release\my_project.exe"
-#      - cd ../..
-#    deploy:
-#      <<: *deploy_base
-#      file: tubex_test_x86_vc12.zip
 
    - name: "Windows Qt 5.12.6 MinGW 7.3.0 x86"
      os: windows
