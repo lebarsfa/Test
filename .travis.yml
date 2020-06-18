@@ -57,14 +57,14 @@ jobs:
      language: python
      python: 3.8
      before_install: 
-       - python --version
-       - python3 --version
-       - pip --version
-       - pip3 --version
-       - sudo python --version
-       - sudo python3 --version
-       - sudo pip --version
-       - sudo pip3 --version
+       - python --version || true
+       - python3 --version || true
+       - pip --version || true
+       - pip3 --version || true
+       - sudo python --version || true
+       - sudo python3 --version || true
+       - sudo pip --version || true
+       - sudo pip3 --version || true
        - sudo apt-get -q update || true
        - sudo apt-get -y install flex bison || true
        - sudo apt-get -y install doxygen graphviz || true
