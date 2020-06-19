@@ -247,8 +247,8 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x64_vc16.zip
-         - tubex_lib-X.X.X-cp38-cp38-win_amd64.whl
+         - "*.zip"
+         - "*.whl"
 
    - name: "Windows Visual Studio 2017 x86 C++"
      os: windows
@@ -288,7 +288,7 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x86_vc15.zip
+         - "*.zip"
 
    - name: "Windows Visual Studio 2017 x64 C++ Python 3.7"
      os: windows
@@ -337,8 +337,8 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x64_vc15.zip
-         - tubex_lib-X.X.X-cp37-cp37m-win_amd64.whl
+         - "*.zip"
+         - "*.whl"
 
    - name: "Windows Visual Studio 2015 x86 C++ Python 3.6"
      os: windows
@@ -387,8 +387,8 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x86_vc14.zip
-         - tubex_lib-X.X.X-cp36-cp36m-win32.whl
+         - "*.zip"
+         - "*.whl"
 
    - name: "Windows Visual Studio 2015 x86 Python 3.4"
      os: windows
@@ -422,7 +422,7 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_lib-X.X.X-cp34-cp34m-win32.whl
+         - "*.whl"
 
    - name: "Windows Visual Studio 2015 x64 C++ Python 3.6"
      os: windows
@@ -471,8 +471,8 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_test_x64_vc14.zip
-         - tubex_lib-X.X.X-cp36-cp36m-win_amd64.whl
+         - "*.zip"
+         - "*.whl"
 
    - name: "Windows Visual Studio 2015 x64 Python 3.5"
      os: windows
@@ -506,7 +506,7 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_lib-X.X.X-cp35-cp35m-win_amd64.whl
+         - "*.whl"
 
    - name: "Windows Visual Studio 2015 x64 Python 3.4"
      os: windows
@@ -540,7 +540,7 @@ jobs:
      deploy:
        <<: *deploy_base
        file: 
-         - tubex_lib-X.X.X-cp34-cp34m-win_amd64.whl
+         - "*.whl"
 
    - name: "Windows Qt 5.12.6 MinGW 7.3.0 x86"
      os: windows
@@ -601,7 +601,8 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x86_mingw7.zip
+       file: 
+         - "*.zip"
 
    - name: "Windows MinGW 8.1.0 x64"
      os: windows
@@ -640,4 +641,5 @@ jobs:
        - cd ../..
      deploy:
        <<: *deploy_base
-       file: tubex_test_x64_mingw8.zip
+       file: 
+         - "*.zip"
