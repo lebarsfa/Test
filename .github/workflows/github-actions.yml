@@ -9,5 +9,7 @@ jobs:
               - os: windows-latest
               - shell: bash
         steps: 
-            uses: actions/checkout@v2
-            run: cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+            - uses: actions/checkout@v2
+            - run: |
+                cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+                ls -l ${PWD}
