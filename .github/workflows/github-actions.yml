@@ -4,11 +4,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
-            os: [macos-latest, windows-latest, ubuntu-latest]
-            python-version: [3.5, 3.7]
+            os: [windows-latest, ubuntu-latest]
+            python-version: [3.5]
             include:
             - os: windows-latest
-            - shell: bash
+              shell: bash
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
@@ -24,5 +24,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
         draft: true
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name:
+        release_name:
