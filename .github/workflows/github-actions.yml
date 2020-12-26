@@ -1,5 +1,15 @@
 on: [push, pull_request]
 jobs:
+ deploy:
+    steps: 
+    - uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        draft: true
+        tag_name: autotagname
+        release_name: autotagname    
  build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -18,19 +28,11 @@ jobs:
         cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
-    - uses: actions/create-release@v1
-      id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        draft: true
-        tag_name: autotagname
-        release_name: autotagname
     - uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./Hello
+        asset_path: ./Hello*
         asset_name: Hello
         asset_content_type: application
