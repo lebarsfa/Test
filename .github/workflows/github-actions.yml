@@ -1,6 +1,5 @@
 on: [push, pull_request]
 jobs:
-    Tests:
         runs-on: ${{ matrix.os }}
         strategy:
           matrix:
