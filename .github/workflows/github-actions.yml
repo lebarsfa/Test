@@ -4,13 +4,16 @@ jobs:
     runs-on: ubuntu-latest
     shell: bash
     uses: actions/checkout@v2
-    run: |
-        cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
-        ls -l ${PWD}
+    steps: 
+        uses: actions/checkout@v2
+        run: |
+            cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+            ls -l ${PWD}
   Windows:
     runs-on: windows-latest
     shell: cmd
-    uses: actions/checkout@v2
-    run: |
-        cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
-        dir ${PWD}
+    steps: 
+        uses: actions/checkout@v2
+        run: |
+            cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+            dir ${PWD}
