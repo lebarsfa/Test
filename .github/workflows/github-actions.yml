@@ -1,6 +1,7 @@
 on: [push, pull_request]
 jobs:
  deploy:
+    id: deploy
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/create-release@v1
@@ -29,11 +30,10 @@ jobs:
         cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
-    - uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: svenstaro/upload-release-action@v2
       with:
-        upload_url: ${{ deploy.steps.create_release.outputs.upload_url }} 
-        asset_path: ./Hello*
-        asset_name: Hello
-        asset_content_type: application
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./Hello*
+        tag: autotagname
+        overwrite: true
+        file_glob: true
