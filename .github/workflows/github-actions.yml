@@ -1,0 +1,8 @@
+on: [push, pull_request]
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+      - ls -l ${PWD}
