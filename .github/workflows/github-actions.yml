@@ -10,6 +10,4 @@ jobs:
               - shell: bash
         steps: 
             uses: actions/checkout@v2
-            run: |
-                cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
-                ls -l ${PWD}
+            run: cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
