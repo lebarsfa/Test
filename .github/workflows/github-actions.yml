@@ -1,13 +1,26 @@
 on: [push, pull_request]
-runs-on: ${{ matrix.os }}
-strategy:
-    matrix:
-    os: [macos-latest, windows-latest, ubuntu-latest]
-    include:
-        - os: windows-latest
-        - shell: bash
-steps: 
+jobs:
+ build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [macos-latest, windows-latest, ubuntu-latest]
+            python-version: [3.5, 3.7]
+            include:
+            - os: windows-latest
+            - shell: bash
+    steps: 
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
     - run: |
         cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+        ./Hello
+        python -c "import sys; print(sys.version)"
         ls -l ${PWD}
+    - uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        draft: true
