@@ -1,14 +1,13 @@
 on: [push, pull_request]
-jobs:
-        runs-on: ${{ matrix.os }}
-        strategy:
-          matrix:
-            os: [macos-latest, windows-latest, ubuntu-latest]
-            include:
-              - os: windows-latest
-              - shell: bash
-        steps: 
-            - uses: actions/checkout@v2
-            - run: |
-                cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
-                ls -l ${PWD}
+runs-on: ${{ matrix.os }}
+strategy:
+    matrix:
+    os: [macos-latest, windows-latest, ubuntu-latest]
+    include:
+        - os: windows-latest
+        - shell: bash
+steps: 
+    - uses: actions/checkout@v2
+    - run: |
+        cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+        ls -l ${PWD}
