@@ -4,7 +4,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
-            os: [windows-latest, ubuntu-latest]
+            os: [ubuntu-latest]
             python-version: [3.5]
             include:
             - os: windows-latest
@@ -16,7 +16,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - run: |
         cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
-        ./Hello
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
     - uses: actions/create-release@v1
