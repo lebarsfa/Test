@@ -1,7 +1,6 @@
 on: [push, pull_request]
 jobs:
  deploy:
-    id: deploy
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/create-release@v1
