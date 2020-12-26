@@ -33,3 +33,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
         asset_path: ./Hello
+        asset_name: Hello
+        asset_content_type: application
