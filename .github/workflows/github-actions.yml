@@ -22,20 +22,18 @@ jobs:
               deploy-file: ./Hello
             - os: windows-latest
               shell: bash
-              deploy-file: Release/Hello.exe
+              deploy-file: Debug/Hello.exe
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
-        cmake -D CMAKE_BUILD_TYPE=Release . && cmake --build .
+        cmake . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
     - uses: AButler/upload-release-assets@v2.0
-      env:
-          DEPLOY_FILE: ${{ matrix.deploy-file }}
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: '$DEPLOY_FILE'
+        files: '${{ matrix.deploy-file }}'
         release-tag: autotagname
