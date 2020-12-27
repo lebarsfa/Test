@@ -31,6 +31,6 @@ jobs:
         ls -l ${PWD}
     - uses: AButler/upload-release-assets@v2.0
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         files: '*Hello*'
         release-tag: autotagname
