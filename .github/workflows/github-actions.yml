@@ -32,5 +32,5 @@ jobs:
     - uses: AButler/upload-release-assets@v2.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: '*Hello*'
+        files: './Hello*;./*/Hello*'
         release-tag: autotagname
