@@ -35,5 +35,5 @@ jobs:
     - uses: AButler/upload-release-assets@v2.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: ${{ matrix.deploy-file }}
+        files: ./**/Hello*
         release-tag: autotagname
