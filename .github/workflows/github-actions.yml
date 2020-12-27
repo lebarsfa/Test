@@ -20,9 +20,9 @@ jobs:
             shell: [bash]
             include:
             - os: ubuntu-latest
-              deploy-file: Hello
+              deploy-file: ./Hello
             - os: windows-latest
-              deploy-file: Debug/Hello.exe
+              deploy-file: ./Debug/Hello.exe
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
@@ -35,5 +35,5 @@ jobs:
     - uses: AButler/upload-release-assets@v2.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: '${{ matrix.deploy-file }}'
+        files: ${{ matrix.deploy-file }}
         release-tag: autotagname
