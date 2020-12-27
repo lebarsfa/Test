@@ -13,7 +13,6 @@ jobs:
         release_name: autotagname    
  build:
     runs-on: ${{ matrix.os }}
-    shell: ${{ matrix.shell }}
     strategy:
         matrix:
             os: [ubuntu-latest, windows-latest]
