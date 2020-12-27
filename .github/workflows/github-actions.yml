@@ -17,11 +17,11 @@ jobs:
         matrix:
             os: [ubuntu-latest, windows-latest]
             python-version: [3.6]
-            shell: [bash]
             include:
             - os: ubuntu-latest
               deploy-file: ./Hello
             - os: windows-latest
+              shell: bash
               deploy-file: ./Debug/Hello.exe
     steps: 
     - uses: actions/checkout@v2
