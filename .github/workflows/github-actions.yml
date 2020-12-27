@@ -15,11 +15,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
-            os: [ubuntu-latest]
             python-version: [3.5]
             include:
+            - os: ubuntu-latest
+              shell: bash
+              deploy-file: ./Hello
             - os: windows-latest
               shell: bash
+              deploy-file: Release/Hello.exe
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
@@ -30,7 +33,9 @@ jobs:
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
     - uses: AButler/upload-release-assets@v2.0
+      env:
+          DEPLOY_FILE: ${{ matrix.deploy-file }}
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: './@(Hello,Release/Hello.exe)'
+        files: '$DEPLOY_FILE'
         release-tag: autotagname
