@@ -32,8 +32,10 @@ jobs:
         cmake . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
-    - uses: AButler/upload-release-assets@v2.0
+    - uses: xresloader/upload-to-github-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: ./**/Hello*
-        release-tag: autotagname
+        file: "${{ matrix.deploy-file }}"
+        overwrite: true
+        tag_name: autotagname
