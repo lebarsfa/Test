@@ -21,9 +21,6 @@ jobs:
             include:
             - os: ubuntu-latest
               deploy-file: ./Hello
-            - os: ubuntu-latest
-              container: lebarsfa/pi:buster
-              deploy-file: ./Hello_pi
             - os: windows-latest
               shell: bash
               deploy-file: ./Debug/Hello.exe
@@ -33,7 +30,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
-        uname -a ; cat /etc/os-release
         cmake . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
