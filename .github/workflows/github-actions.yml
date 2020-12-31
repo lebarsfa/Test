@@ -19,7 +19,7 @@ jobs:
             cfg:
             - { os: ubuntu-latest, deploy-file: ./Hello }
             - { os: windows-latest, deploy-file: ./Debug/Hello.exe }
-            python-version: [3.7, 3.8]
+            python-version: 3.7 #[3.7, 3.8]
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
