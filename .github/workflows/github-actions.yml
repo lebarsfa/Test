@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: uname -a ; cat /etc/os-release 
-      if: runner.os == "Linux"
+      if: runner.os == 'Linux'
     - run: |
         cmake . && cmake --build .
         python -c "import sys; print(sys.version)"
