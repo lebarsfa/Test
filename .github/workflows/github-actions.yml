@@ -19,9 +19,8 @@ jobs:
             cfg:
             - { os: ubuntu-latest, cc: gcc, cxx: g++, platform: x32, deploy-file: ./Hello }
             - { os: ubuntu-latest, container: "lebarsfa/pi:buster", deploy-file: ./Hello_pi }
-            - { os: windows-latest, cc: cl, cxx: cl, platform: x32, deploy-file: ./Debug/Hello.exe }
+            - { os: windows-latest, cc: cl, cxx: cl, platform: x32, shell: bash, deploy-file: ./Debug/Hello.exe }
             python-version: [3.8]
-            shell: bash
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
