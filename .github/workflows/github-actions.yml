@@ -20,10 +20,10 @@ jobs:
             - { os: ubuntu-latest, container: 'lebarsfa/pi:buster', deploy-file: ./Hello }
             - { os: windows-latest, container: 'host', deploy-file: ./Debug/Hello.exe }
             python-version: [3.7, 3.8]
-            cmds: |
+            cmds: '|
                 cmake . && cmake --build .
                 python -c "import sys; print(sys.version)"
-                ls -l ${PWD}
+                ls -l ${PWD}'
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
