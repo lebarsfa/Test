@@ -35,7 +35,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
-        uname -a ; cat /etc/os-release
+        if: runner.os == 'Linux' 
+         uname -a ; cat /etc/os-release 
+        fi
         cmake . && cmake --build .
         python -c "import sys; print(sys.version)"
         ls -l ${PWD}
