@@ -13,17 +13,19 @@ jobs:
         tag_name: autotagname
         release_name: autotagname    
  build:
-    #runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
-            #os: [ubuntu-latest, windows-latest]
+            cfg:
+            - { os: ubuntu-latest, cc: gcc, cxx: g++, platform: x32 }
+            - { os: windows-latest, cc: cl, cxx: cl, platform: x32 }
             python-version: [3.8]
             include:
             - os: ubuntu-latest
               deploy-file: ./Hello
-            - os: ubuntu-latest
-              container: lebarsfa/pi:buster
-              deploy-file: ./Hello_pi
+#            - os: ubuntu-latest
+#              container: lebarsfa/pi:buster
+#              deploy-file: ./Hello_pi
             - os: windows-latest
               shell: bash
               deploy-file: ./Debug/Hello.exe
