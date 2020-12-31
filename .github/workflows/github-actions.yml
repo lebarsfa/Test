@@ -13,7 +13,7 @@ jobs:
         tag_name: autotagname
         release_name: autotagname    
  build:
-    runs-on: ${{ matrix.os }}
+#    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             cfg:
