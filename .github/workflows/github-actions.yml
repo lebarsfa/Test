@@ -46,4 +46,4 @@ jobs:
 #        options: -i
     steps: 
     - uses: actions/checkout@v2
-    - run: docker run -i -v \"${PWD}/..:${PWD}/..\" lebarsfa/pi:buster /bin/bash -c \"uname -a && cat /etc/os-release && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a\"
+    - run: docker run -i -v "${PWD}"/..:"${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a"
