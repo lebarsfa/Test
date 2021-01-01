@@ -14,41 +14,35 @@ jobs:
 #        release_name: autotagname    
  matrix:
     runs-on: ${{ matrix.cfg.os }}
+    defaults:
+        run:
+            shell: ${{ matrix.cfg.shell }}
     strategy:
         matrix:
             cfg:
-            - { os: ubuntu-latest, deploy-file: ./Hello }
-            - { os: windows-latest, deploy-file: ./Debug/Hello.exe }
-            python-version: [3.6, 3.8]
+            - { os: windows-2016, shell: cmd }
     steps: 
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/cache@v2
+      id: cache-opencv
       with:
-        python-version: ${{ matrix.python-version }}
-    - run: uname -a ; cat /etc/os-release 
-      if: runner.os == 'Linux'
+        path: "C:/OpenCV4.2.0"
+        key: ${{ runner.os }}-opencv 
     - run: |
-        cmake . && cmake --build .
-        python -c "import sys; print(sys.version)"
-        ls -l
-      shell: bash
+        wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
+        7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
+      if: steps.cache-opencv.outputs.cache-hit != 'true'
+    - run: |
+        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
+        %SystemDrive%\cmake_extra_tools\pathman /as C:\OpenCV4.2.0\x86\vc15\bin
+    - run: | 
+        cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
+        .\Release\DisplayImage.exe
     - uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: "${{ matrix.cfg.deploy-file }}"
-        overwrite: true
-        tag_name: autotagname
- dockerpi:
-    runs-on: ubuntu-latest
-    steps: 
-    - uses: actions/checkout@v2
-    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run: docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a && cmake . && cmake --build . && mv ./Hello ./Hello_pi"
-    - uses: xresloader/upload-to-github-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        file: "./Hello_pi"
+        file: "./Release/DisplayImage.exe"
         overwrite: true
         tag_name: autotagname
