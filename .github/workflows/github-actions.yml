@@ -1,50 +1,50 @@
 on: [push, pull_request]
 jobs:
  # This job can be removed if a new release should not be created...
- deploy:
-    runs-on: ubuntu-latest
-    steps: 
-    - uses: actions/create-release@v1
-      id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        draft: true
-        tag_name: autotagname
-        release_name: autotagname    
- matrix:
-    runs-on: ${{ matrix.cfg.os }}
-    strategy:
-        matrix:
-            cfg:
-            - { os: ubuntu-latest, deploy-file: ./Hello }
-            - { os: windows-latest, deploy-file: ./Debug/Hello.exe }
-            python-version: [3.6] #[3.6, 3.8]
-    steps: 
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - run: uname -a ; cat /etc/os-release 
-      if: runner.os == 'Linux'
-    - run: |
-        cmake . && cmake --build .
-        python -c "import sys; print(sys.version)"
-        ls -l
-      shell: bash
-    - uses: xresloader/upload-to-github-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        file: "${{ matrix.cfg.deploy-file }}"
-        overwrite: true
-        tag_name: autotagname
+# deploy:
+#    runs-on: ubuntu-latest
+#    steps: 
+#    - uses: actions/create-release@v1
+#      id: create_release
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        draft: true
+#        tag_name: autotagname
+#        release_name: autotagname    
+# matrix:
+#    runs-on: ${{ matrix.cfg.os }}
+#    strategy:
+#        matrix:
+#            cfg:
+#            - { os: ubuntu-latest, deploy-file: ./Hello }
+#            - { os: windows-latest, deploy-file: ./Debug/Hello.exe }
+#            python-version: [3.6] #[3.6, 3.8]
+#    steps: 
+#    - uses: actions/checkout@v2
+#    - uses: actions/setup-python@v2
+#      with:
+#        python-version: ${{ matrix.python-version }}
+#    - run: uname -a ; cat /etc/os-release 
+#      if: runner.os == 'Linux'
+#    - run: |
+#        cmake . && cmake --build .
+#        python -c "import sys; print(sys.version)"
+#        ls -l
+#      shell: bash
+#    - uses: xresloader/upload-to-github-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        file: "${{ matrix.cfg.deploy-file }}"
+#        overwrite: true
+#        tag_name: autotagname
  dockerpi:
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v2
     - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run: docker run -i -v "${PWD}"/..:"${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a && cmake . && cmake --build . && mv ./Hello ./Hello_pi"
+    - run: docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a && cmake . && cmake --build . && mv ./Hello ./Hello_pi"
     - uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
