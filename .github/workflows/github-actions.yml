@@ -41,7 +41,9 @@ jobs:
 #        tag_name: autotagname
  dockerpi:
     runs-on: ubuntu-latest
-    container: lebarsfa/pi:buster
+    container: 
+        image: lebarsfa/pi:buster
+        options: -i
     steps: 
     - uses: actions/checkout@v2
     - run: |
