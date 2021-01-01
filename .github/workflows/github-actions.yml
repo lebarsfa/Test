@@ -42,13 +42,15 @@ jobs:
     - run: |
         wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
-      if: steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
+      if: matrix.steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
     - run: |
         wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
-      if: steps.cache-opencv.outputs.cache-hit != 'true'
+      if: matrix.steps.cache-opencv.outputs.cache-hit != 'true'
     - run: | 
         reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
+        dir %SystemDrive%\cmake_extra_tools
+        %SystemDrive%\cmake_extra_tools\pathman /?
         %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin
     - run: | 
         cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
