@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
         image: lebarsfa/pi:buster
-        options: -e
+        options: -i
     steps: 
     - uses: actions/checkout@v2
     - run: |
