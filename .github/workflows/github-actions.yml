@@ -22,6 +22,11 @@ jobs:
             cfg:
             - { os: windows-2016, shell: cmd }
     steps: 
+    - run: | 
+        perl -v
+        sed -v
+        wget -v
+      shell: bash
     - uses: actions/checkout@v2
     - run: |
         choco install -y -r --no-progress wget
@@ -44,7 +49,9 @@ jobs:
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
       if: steps.cache-opencv.outputs.cache-hit != 'true'
     - run: | 
-        %SystemDrive%\cmake_extra_tools\pathman /as C:\OpenCV4.2.0\x86\vc15\bin
+        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
+        %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin
+    - run: | 
         cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
         .\Release\DisplayImage.exe
     - uses: xresloader/upload-to-github-release@v1
