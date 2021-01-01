@@ -24,7 +24,7 @@ jobs:
     steps: 
     - run: | 
         perl -v
-        sed -v
+        sed --version
         wget -v
       shell: bash
     - uses: actions/checkout@v2
