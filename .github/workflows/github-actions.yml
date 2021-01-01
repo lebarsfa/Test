@@ -43,7 +43,7 @@ jobs:
         wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
       if: steps.cache-opencv.outputs.cache-hit != 'true'
-   - run: | 
+    - run: | 
         %SystemDrive%\cmake_extra_tools\pathman /as C:\OpenCV4.2.0\x86\vc15\bin
         cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
         .\Release\DisplayImage.exe
