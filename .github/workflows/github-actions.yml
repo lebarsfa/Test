@@ -29,10 +29,10 @@ jobs:
         python-version: ${{ matrix.cfg.PY_V_MAJ }}.${{ matrix.cfg.PY_V_MIN }}
         architecture: ${{ matrix.cfg.arch }}
     - run: |
+        mklink %SYSTEMROOT%\System32\wget.exe C:\msys64\usr\bin\wget.exe & true
+        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         python -c "import sys; print(sys.version)"
         echo ${{ matrix.cfg.PY_V_MAJ }}.${{ matrix.cfg.PY_V_MIN }}
-        mklink %SYSTEMROOT%\System32\wget.exe C:\msys64\usr\bin\wget.exe & true
-        wget --version & true
     - run: choco install -y -r --no-progress vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
       if: matrix.cfg.CHOCO_VS_TOOLS=='vcbuildtools'
     - run: choco install -y -r --no-progress ${{ matrix.cfg.CHOCO_VS_TOOLS }} winflexbison
