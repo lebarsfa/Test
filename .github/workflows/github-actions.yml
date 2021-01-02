@@ -24,9 +24,9 @@ jobs:
     steps: 
 
     - run: | 
-      # Comment
+    # Comment
         echo 0
-      # Comment
+    # Comment
         echo 1
     - run: | 
         # Comment
