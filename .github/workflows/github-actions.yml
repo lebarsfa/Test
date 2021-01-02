@@ -22,11 +22,10 @@ jobs:
             cfg:
             - { os: windows-2016, shell: cmd }
     steps: 
-    - run: | 
+    - run: & 
         echo 1
         wget
         echo 1
-        cmd
     - run: | 
         perl -v
         sed --version
