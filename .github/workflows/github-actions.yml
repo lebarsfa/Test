@@ -31,9 +31,7 @@ jobs:
     - run: |
         python -c "import sys; print(sys.version)"
         echo ${{ matrix.cfg.PY_V_MAJ }}.${{ matrix.cfg.PY_V_MIN }}
-#    - run: choco install -y -r --no-progress wget
-    - run: new-item -itemtype symboliclink -path c:\windows\system32\ -name wget.exe -value C:\msys64\usr\bin\wget.exe
-      shell: pwsh
+    - run: choco install -y -r --no-progress wget
     - run: wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
     - run: choco install -y -r --no-progress vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
       if: matrix.cfg.CHOCO_VS_TOOLS=='vcbuildtools'
