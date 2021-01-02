@@ -1,0 +1,75 @@
+on: [push, pull_request]
+jobs:
+ # This job can be removed if a new release should not be created...
+# deploy:
+#    runs-on: ubuntu-latest
+#    steps: 
+#    - uses: actions/create-release@v1
+#      id: create_release
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        draft: true
+#        tag_name: autotagname
+#        release_name: autotagname    
+ matrix:
+    runs-on: ${{ matrix.cfg.os }}
+    defaults:
+        run:
+            shell: ${{ matrix.cfg.shell }}
+    strategy:
+        matrix:
+            cfg:
+            - { os: windows-2019, shell: cmd }
+    steps: 
+    # Comment
+    - run: | 
+        echo 0
+        rem Comment
+        echo 1
+    - run: | 
+        # Comment
+        perl -v
+        sed --version
+      shell: bash
+    - uses: actions/checkout@v2
+#    - run: |
+#        choco install -y -r --no-progress wget
+    - uses: actions/cache@v2
+      id: cache-cmake_extra_tools
+      with:
+        path: 'C:\cmake_extra_tools'
+        key: ${{ runner.os }}-cmake_extra_tools 
+    - uses: actions/cache@v2
+      id: cache-opencv
+      with:
+        path: 'C:\OpenCV4.2.0'
+        key: ${{ runner.os }}-opencv 
+    - run: |
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
+      if: steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
+    - run: |
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
+        7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
+      if: steps.cache-opencv.outputs.cache-hit != 'true'
+    - run: | 
+        rem For OpenCV
+        powershell -Command "Install-WindowsFeature Server-Media-Foundation"
+        rem powerShell -Command "Add-WindowsCapability -Online -Name Tools.Graphics.DirectX*"
+        rem powerShell -Command "Add-WindowsCapability -Online -Name Media.WindowsMediaPlayer*"
+        rem powerShell -Command "Add-WindowsCapability -Online -Name Browser.InternetExplorer*"
+        rem powerShell -Command "Add-WindowsCapability -Online -Name ServerCore.AppCompatibility*"
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
+        7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y & rem ksuser.dll already on windows-2016...?
+        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
+        %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & true & rem Non-zero exit code...?
+    - run: | 
+        cmake -G "Visual Studio 16" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
+    - uses: xresloader/upload-to-github-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        file: "./Release/DisplayImage.exe"
+        overwrite: true
+        tag_name: autotagname
