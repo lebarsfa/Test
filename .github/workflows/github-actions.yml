@@ -25,6 +25,7 @@ jobs:
     steps: 
 #    - run: choco install -y -r --no-progress wget
     - run: Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\tools\msys64\usr\bin\wget.exe %*"
+      shell: pwsh
       if: runner.os == 'Windows'
     - run: wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
     - uses: actions/checkout@v2
