@@ -23,10 +23,11 @@ jobs:
             - { os: windows-2016, shell: cmd }
     steps: 
 
+    # Comment
     - run: | 
-    # Comment
+# Comment
         echo 0
-    # Comment
+# Comment
         echo 1
     - run: | 
         # Comment
