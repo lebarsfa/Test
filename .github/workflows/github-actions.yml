@@ -21,24 +21,24 @@ jobs:
         matrix:
             cfg:
 #            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, CMAKE_PARAM_G: 'Visual Studio 14', CMAKE_PARAM_A: Win32, CHOCO_VS_TOOLS: 'vcbuildtools', CPCFG: '-win32', PY_V_M: 3, PY_V_m: 4 }
-            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CPCFG: '-win_amd64', PY_V_M: 3, PY_V_m: 9 }
+            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CPCFG: '-win_amd64', PY_V_MAJ: 3, PY_V_MIN: 9 }
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.cfg.PY_V_M }}.${{ matrix.cfg.PY_V_m }}
+        python-version: ${{ matrix.cfg.PY_V_MAJ }}.${{ matrix.cfg.PY_V_MIN }}
         architecture: ${{ matrix.cfg.arch }}
     - run: |
         python -c "import sys; print(sys.version)"
-        echo ${{ matrix.cfg.PY_V_M }}.${{ matrix.cfg.PY_V_m }}
+        echo ${{ matrix.cfg.PY_V_MAJ }}.${{ matrix.cfg.PY_V_MIN }}
 #    - run: choco install -y -r --no-progress vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
 #      if: matrix.cfg.CHOCO_VS_TOOLS=='vcbuildtools'
 #    - run: choco install -y -r --no-progress ${{ matrix.cfg.CHOCO_VS_TOOLS }} winflexbison
 #      if: matrix.cfg.CHOCO_VS_TOOLS!='vcbuildtools'
     - run: choco install -y -r --no-progress doxygen.install graphviz & python -m pip install --upgrade pip==19.1.1 & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & refreshenv.cmd
-      if: matrix.cfg.PY_V_M=='3' && matrix.cfg.PY_V_m=='4'
+      if: matrix.cfg.PY_V_MAJ=='3' && matrix.cfg.PY_V_MIN=='4'
     - run: choco install -y -r --no-progress doxygen.install graphviz & python -m pip install --upgrade pip & pip install --upgrade pyIbex & pip install --upgrade wheel setuptools & git clone -b v3.1.1 https://github.com/sphinx-doc/sphinx & cd sphinx & pip install . & pip install --upgrade breathe sphinx-issues sphinx-tabs sphinx_rtd_theme & refreshenv.cmd
-      if: matrix.cfg.PY_V_M!='3' || matrix.cfg.PY_V_m!='4'
+      if: matrix.cfg.PY_V_MAJ!='3' || matrix.cfg.PY_V_MIN!='4'
     - run: |
         cmake -G ${{ matrix.cfg.CMAKE_PARAM_G }} -A ${{ matrix.cfg.CMAKE_PARAM_A }} .
         cmake --build .
