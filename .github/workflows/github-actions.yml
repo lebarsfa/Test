@@ -23,8 +23,11 @@ jobs:
             - { os: windows-2016, shell: cmd }
     steps: 
     - run: | 
+        wget
+        echo 0
+        wget
+    - run: | 
         perl -v
-        false
         sed --version
       shell: bash
     - uses: actions/checkout@v2
