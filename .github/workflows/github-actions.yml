@@ -20,7 +20,7 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: windows-2016, shell: cmd }
+            - { os: windows-2019, shell: cmd }
     steps: 
     - run: | 
         perl -v
