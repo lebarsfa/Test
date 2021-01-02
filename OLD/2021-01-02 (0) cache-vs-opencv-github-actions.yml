@@ -32,8 +32,11 @@ jobs:
         perl -v
         sed --version
       shell: bash
+#    - run: choco install -y -r --no-progress wget
+    - run: Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\msys64\usr\bin\wget.exe %*"
+      shell: pwsh
+      if: runner.os == 'Windows'
     - uses: actions/checkout@v2
-    - run: choco install -y -r --no-progress wget
     - uses: actions/cache@v2
       id: cache-cmake_extra_tools
       with:
