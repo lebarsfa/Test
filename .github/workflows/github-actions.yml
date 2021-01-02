@@ -22,49 +22,51 @@ jobs:
             cfg:
             - { os: windows-2016, shell: cmd }
     steps: 
+
     - run: | 
-        echo 1
-        wget
+      # Comment
+        echo 0
+      # Comment
         echo 1
     - run: | 
+        # Comment
         perl -v
         sed --version
       shell: bash
     - uses: actions/checkout@v2
 #    - run: |
 #        choco install -y -r --no-progress wget
-#    - uses: actions/cache@v2
-#      id: cache-cmake_extra_tools
-#      with:
-#        path: 'C:\cmake_extra_tools'
-#        key: ${{ runner.os }}-cmake_extra_tools 
-#    - uses: actions/cache@v2
-#      id: cache-opencv
-#      with:
-#        path: 'C:\OpenCV4.2.0'
-#        key: ${{ runner.os }}-opencv 
-#    - run: |
-#        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
-#        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
-#      if: steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
-#    - run: |
-#        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
-#        7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
-#      if: steps.cache-opencv.outputs.cache-hit != 'true'
-#    - run: | 
-#        rem For OpenCV
-#        powershell -Command "Install-WindowsFeature Server-Media-Foundation"
-#        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
-#        7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y
-#        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
-#        %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & rem Non-zero exit code...?
-#    - run: | 
-#        cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
-#    - uses: xresloader/upload-to-github-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        file: "./Release/DisplayImage.exe"
-#        overwrite: true
-#        tag_name: autotagname
-#
+    - uses: actions/cache@v2
+      id: cache-cmake_extra_tools
+      with:
+        path: 'C:\cmake_extra_tools'
+        key: ${{ runner.os }}-cmake_extra_tools 
+    - uses: actions/cache@v2
+      id: cache-opencv
+      with:
+        path: 'C:\OpenCV4.2.0'
+        key: ${{ runner.os }}-opencv 
+    - run: |
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
+      if: steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
+    - run: |
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
+        7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
+      if: steps.cache-opencv.outputs.cache-hit != 'true'
+    - run: | 
+        rem For OpenCV
+        powershell -Command "Install-WindowsFeature Server-Media-Foundation"
+        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
+        7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y
+        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
+        %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & rem Non-zero exit code...?
+    - run: | 
+        cmake -G "Visual Studio 15" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
+    - uses: xresloader/upload-to-github-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        file: "./Release/DisplayImage.exe"
+        overwrite: true
+        tag_name: autotagname
