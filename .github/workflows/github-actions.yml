@@ -20,8 +20,8 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, CMAKE_PARAM_G: 'Visual Studio 14', CMAKE_PARAM_A: Win32, CFG: x86_vc14, CHOCO_VS_TOOLS: 'vcbuildtools', CPCFG: '-win32', PY_V_MDM: 3.4, PY_V_MM: 34 }
-            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CFG: x64vc16, CPCFG: '-win_amd64', PY_V_MDM: 3.9, PY_V_MM: 39 }
+            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, CMAKE_PARAM_G: 'Visual Studio 14', CMAKE_PARAM_A: Win32, CFG: ${{ arch }}_${{ runtime }}, CHOCO_VS_TOOLS: 'vcbuildtools', CPCFG: '-win32', PY_V_MDM: 3.4, PY_V_MM: 34 }
+            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CFG: ${{ arch }}_${{ runtime }}, CPCFG: '-win_amd64', PY_V_MDM: 3.9, PY_V_MM: 39 }
     steps: 
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
@@ -31,8 +31,6 @@ jobs:
     - run: |
         python --version
         echo ${{ matrix.cfg.CFG }}
-    - run: |
-        choco install -y -r --no-progress wget
     - run: choco install -y vcbuildtools -ia "/InstallSelectableItems Win81SDK_CppBuildSKUV1;VisualCppBuildTools_ATLMFC_SDK" winflexbison
       if: matrix.cfg.CHOCO_VS_TOOLS=='vcbuildtools'
     - run: choco install -y ${{ matrix.cfg.CHOCO_VS_TOOLS }} winflexbison
