@@ -33,8 +33,7 @@ jobs:
         sed --version
       shell: bash
     - uses: actions/checkout@v2
-#    - run: choco install -y -r --no-progress wget
-    - run: mklink %SYSTEMROOT%\System32\wget.exe C:\msys64\usr\bin\wget.exe & true
+    - run: choco install -y -r --no-progress wget
     - uses: actions/cache@v2
       id: cache-cmake_extra_tools
       with:
