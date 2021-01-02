@@ -25,7 +25,6 @@ jobs:
     - run: | 
         wget
         echo 0
-        wget
     - run: | 
         perl -v
         sed --version
