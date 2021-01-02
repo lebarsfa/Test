@@ -48,7 +48,6 @@ jobs:
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
       if: matrix.steps.cache-opencv.outputs.cache-hit != 'true'
     - run: | 
-      # For OpenCV        
         powershell -Command "Install-WindowsFeature Server-Media-Foundation"
 #        powerShell -Command "Add-WindowsCapability -Online -Name Tools.Graphics.DirectX*"
 #        powerShell -Command "Add-WindowsCapability -Online -Name Media.WindowsMediaPlayer*"
