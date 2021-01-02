@@ -33,8 +33,8 @@ jobs:
         sed --version
       shell: bash
     - uses: actions/checkout@v2
-#    - run: |
-#        choco install -y -r --no-progress wget
+#    - run: choco install -y -r --no-progress wget
+    - run: mklink %SYSTEMROOT%\System32\wget.exe C:\msys64\usr\bin\wget.exe
     - uses: actions/cache@v2
       id: cache-cmake_extra_tools
       with:
@@ -46,11 +46,11 @@ jobs:
         path: 'C:\OpenCV4.2.0'
         key: ${{ runner.os }}-opencv 
     - run: |
-        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
       if: steps.cache-cmake_extra_tools.outputs.cache-hit != 'true'
     - run: |
-        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
+        wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
       if: steps.cache-opencv.outputs.cache-hit != 'true'
     - run: | 
@@ -60,7 +60,7 @@ jobs:
         rem powerShell -Command "Add-WindowsCapability -Online -Name Media.WindowsMediaPlayer*"
         rem powerShell -Command "Add-WindowsCapability -Online -Name Browser.InternetExplorer*"
         rem powerShell -Command "Add-WindowsCapability -Online -Name ServerCore.AppCompatibility*"
-        C:\msys64\usr\bin\wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
+        wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
         7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y & rem ksuser.dll already on windows-2016...?
         reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
         %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & true & rem Non-zero exit code...?
