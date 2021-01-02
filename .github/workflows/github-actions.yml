@@ -24,7 +24,7 @@ jobs:
             - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CPCFG: '-win_amd64', PY_V_MAJ: 3, PY_V_MIN: 9 }
     steps: 
 #    - run: choco install -y -r --no-progress wget
-    - run: Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\tools\msys64\usr\bin\wget.exe %*"
+    - run: Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\msys64\usr\bin\wget.exe %*"
       shell: pwsh
       if: runner.os == 'Windows'
     - run: wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
