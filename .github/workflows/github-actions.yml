@@ -49,10 +49,6 @@ jobs:
       if: matrix.steps.cache-opencv.outputs.cache-hit != 'true'
     - run: | 
         powershell -Command "Install-WindowsFeature Server-Media-Foundation"
-#        powerShell -Command "Add-WindowsCapability -Online -Name Tools.Graphics.DirectX*"
-#        powerShell -Command "Add-WindowsCapability -Online -Name Media.WindowsMediaPlayer*"
-#        powerShell -Command "Add-WindowsCapability -Online -Name Browser.InternetExplorer*"
-#        powerShell -Command "Add-WindowsCapability -Online -Name ServerCore.AppCompatibility*"
         wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_core_prereq.zip --no-check-certificate -nv
         cmd //c "7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y"
     - run: | 
