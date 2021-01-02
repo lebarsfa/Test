@@ -23,8 +23,10 @@ jobs:
             - { os: windows-2016, shell: cmd }
     steps: 
     - run: | 
+        echo 1
         wget
-        echo 0
+        echo 1
+        cmd
     - run: | 
         perl -v
         sed --version
