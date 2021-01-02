@@ -25,7 +25,7 @@ jobs:
     # Comment
     - run: | 
         echo 0
-# Comment
+        rem Comment
         echo 1
     - run: | 
         # Comment
