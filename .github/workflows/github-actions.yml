@@ -20,7 +20,7 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, CMAKE_PARAM_G: 'Visual Studio 14', CMAKE_PARAM_A: Win32, CFG: ${{ arch }}, CHOCO_VS_TOOLS: 'vcbuildtools', CPCFG: '-win32', PY_V_MDM: 3.4, PY_V_MM: 34 }
+            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, CMAKE_PARAM_G: 'Visual Studio 14', CMAKE_PARAM_A: Win32, CFG: '${{ arch }}', CHOCO_VS_TOOLS: 'vcbuildtools', CPCFG: '-win32', PY_V_MDM: 3.4, PY_V_MM: 34 }
             - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, CMAKE_PARAM_G: 'Visual Studio 16', CMAKE_PARAM_A: x64, CFG: x64_vc16, CPCFG: '-win_amd64', PY_V_MDM: 3.9, PY_V_MM: 39 }
     steps: 
     - uses: actions/checkout@v2
