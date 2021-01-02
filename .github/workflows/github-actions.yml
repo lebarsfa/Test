@@ -65,7 +65,7 @@ jobs:
         reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
         %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & true & rem Non-zero exit code...?
     - run: | 
-        cmake -G "Visual Studio 17" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
+        cmake -G "Visual Studio 16" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
     - uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
