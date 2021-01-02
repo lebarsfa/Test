@@ -22,10 +22,8 @@ jobs:
             cfg:
             - { os: windows-2016, shell: cmd }
     steps: 
-
     # Comment
     - run: | 
-# Comment
         echo 0
 # Comment
         echo 1
