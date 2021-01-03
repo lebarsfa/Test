@@ -33,7 +33,12 @@ jobs:
         sed --version
       shell: bash
 #    - run: choco install -y -r --no-progress wget
-    - run: Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\msys64\usr\bin\wget.exe %*"
+#        Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\msys64\usr\bin\wget.exe %*"
+#        Set-Content -Path $env:SystemRoot\System32\wget -Value "!/bin/sh"
+#        Add-Content -Path $env:SystemRoot\System32\wget -Value "/c/msys64/usr/bin/wget.exe \"$@\""
+    - run: | 
+        (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
+        7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
       if: runner.os == 'Windows'
     - uses: actions/checkout@v2
