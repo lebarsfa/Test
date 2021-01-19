@@ -1,7 +1,7 @@
 on: 
     push:
-        branches: '*'
-        tags-ignore: 'v*'
+        branches: '**'
+        tags: ''
     pull_request:
 
 jobs:
