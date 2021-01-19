@@ -1,4 +1,8 @@
-on: [push, pull_request]
+on: 
+    push:
+        tags: ''
+    pull_request:
+
 jobs:
  # This job can be removed if a new release should not be created...
 # deploy:

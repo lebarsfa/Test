@@ -23,11 +23,11 @@ jobs:
             - { os: windows-2019, shell: cmd }
     steps: 
     # Comment
-    - run: | 
+    - run: |
         echo 0
         rem Comment
         echo 1
-    - run: | 
+    - run: |
         # Comment
         perl -v
         sed --version
@@ -36,7 +36,7 @@ jobs:
 #        Set-Content -Path $env:SystemRoot\System32\wget.bat -Value "@C:\msys64\usr\bin\wget.exe %*"
 #        Set-Content -Path $env:SystemRoot\System32\wget -Value "!/bin/sh"
 #        Add-Content -Path $env:SystemRoot\System32\wget -Value "/c/msys64/usr/bin/wget.exe \"$@\""
-    - run: | 
+    - run: |
         (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
@@ -60,7 +60,7 @@ jobs:
         wget http://www.ensta-bretagne.fr/lebars/Share/OpenCV4.2.0_mini.zip --no-check-certificate -nv
         7z x OpenCV4.2.0_mini.zip -o"%SystemDrive%" -y
       if: steps.cache-opencv.outputs.cache-hit != 'true'
-    - run: | 
+    - run: |
         rem For OpenCV
         powershell -Command "Install-WindowsFeature Server-Media-Foundation"
         rem powerShell -Command "Add-WindowsCapability -Online -Name Tools.Graphics.DirectX*"
@@ -71,7 +71,7 @@ jobs:
         7z x windows_server_core_prereq.zip -o"%SystemRoot%" -y & rem ksuser.dll already on windows-2016...?
         reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\OpenCV /v "OpenCV4.2.0" /d "%SystemDrive%\\OpenCV4.2.0" /f
         %SystemDrive%\cmake_extra_tools\pathman /as %SystemDrive%\OpenCV4.2.0\x86\vc15\bin & true & rem Non-zero exit code...?
-    - run: | 
+    - run: |
         cmake -G "Visual Studio 16" -A Win32 -T v141_xp . & cmake --build . --config Release --target DisplayImage
     - uses: xresloader/upload-to-github-release@v1
       env:
