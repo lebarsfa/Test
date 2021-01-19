@@ -1,13 +1,13 @@
 on: [push, pull_request]
 jobs:
- j:
+ :
     name: Ubuntu 12.04 i386
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v2
     - run: docker run -i -v "${PWD}/..:${PWD}/.." i386/ubuntu:precise /bin/bash -c "linux32 --32bit i386 uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update ; apt-get -y install sudo lsb-release wget unzip build-essential cmake libopencv-dev libgtk2.0 && lsb_release -a && wget https://github.com/ENSTABretagneRobotics/OSUtils/archive/master.zip && unzip -q -o master.zip && mv -f OSUtils-master ../OSUtils && rm -Rf master.zip && wget https://github.com/ENSTABretagneRobotics/Extensions/archive/master.zip && unzip -q -o master.zip && mv -f Extensions-master ../Extensions && rm -Rf master.zip && cmake . && cmake --build ."
 
- j:
+ :
     name: Ubuntu 16.04 i386
     runs-on: ubuntu-latest
     steps: 
