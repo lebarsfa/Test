@@ -1,7 +1,7 @@
 on: 
     push:
         tags-ignore: 
-        - '[0-9a-z]+'
+        - 'v*'
     pull_request:
 
 jobs:
