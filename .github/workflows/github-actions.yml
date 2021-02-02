@@ -42,7 +42,7 @@ jobs:
       shell: pwsh
     - run: |
         where cmake
-        dir "C:\Program files\CMake\share\cmake"
+        dir "C:\Program files\CMake\share"
         wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv
         choco install -v -y -s . eigen & refreshenv & cmake ${{ matrix.cfg.cmake_params }} . & cmake --build . --config Release & .\Release\my_project.exe
       shell: cmd
