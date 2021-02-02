@@ -5,6 +5,7 @@ using namespace Eigen;
 
 int main()
 {
-	cout << (MatrixXd m(2, 3)) << endl;
+	MatrixXd m(2, 3);
+	cout << m << endl;
 	return 0;
 }
