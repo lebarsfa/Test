@@ -16,7 +16,7 @@ jobs:
       with:
         draft: true
         tag_name: autotagname
-        release_name: autotagname    
+        release_name: autotagname
  matrix:
     runs-on: ${{ matrix.cfg.os }}
     strategy:

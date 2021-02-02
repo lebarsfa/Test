@@ -4,29 +4,46 @@ on:
         branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
+
 jobs:
  # This job can be removed if a new release should not be created...
- deploy:
-    runs-on: ubuntu-latest
-    steps: 
-    - uses: actions/create-release@v1
-      id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        draft: true
-        tag_name: autotagname
-        release_name: autotagname    
- dockerpi:
-    runs-on: ubuntu-latest
+# deploy:
+#    runs-on: ubuntu-latest
+#    steps: 
+#    - uses: actions/create-release@v1
+#      id: create_release
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        draft: true
+#        tag_name: autotagname
+#        release_name: autotagname
+
+ matrix:
+    runs-on: ${{ matrix.cfg.os }}
+    defaults:
+        run:
+            shell: ${{ matrix.cfg.shell }}
+    strategy:
+        matrix:
+            cfg:
+#            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, cmake_params: '-G "Visual Studio 14" -A Win32', choco_vs_tools: 'vcbuildtools', cpcfg: '-win32', py_v_maj: 3, py_v_min: 4, with_python: ON, with_cpp_bundle: ON }
+            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, cmake_params: '-G "Visual Studio 16" -A x64', cpcfg: '-win_amd64', py_v_maj: 3, py_v_min: 9, with_python: ON, with_cpp_bundle: ON }
     steps: 
     - uses: actions/checkout@v2
-    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run: docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a && cmake . && cmake --build . && mv ./Hello ./Hello_pi"
-    - uses: xresloader/upload-to-github-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: "Hello_pi"
-        overwrite: true
-        tag_name: autotagname
+        submodules: true
+        fetch-depth: 0
+        clean: false
+#    - run: choco install -y -r --no-progress wget
+    - run: |
+        (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
+        7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
+      shell: pwsh
+    - run: wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv & choco install -y eigen.3.3.4.nupkg
+    - run: |
+        cmake ${{ matrix.cfg.cmake_params }} .
+        cmake --build . --config Release
+        /Release/my_project.exe
+        cd ../..
+      shell: bash

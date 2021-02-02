@@ -1,3 +1,17 @@
-cmake_minimum_required(VERSION 2.8...3.12)
-project(Hello)
-add_executable(Hello Main.c)
+cmake_minimum_required(VERSION 3.0.2)
+  project(my_project LANGUAGES CXX)
+
+# Adding Eigen3
+
+  # In case you installed Eigen3 in a local directory, you need
+  # to specify its path with the CMAKE_PREFIX_PATH option, e.g.
+  # set(CMAKE_PREFIX_PATH "~/eigen/build_install")
+  set(CMAKE_PREFIX_PATH "../eigen")
+
+  find_package(Eigen3 REQUIRED NO_MODULE)
+  message(STATUS "Found Eigen3 version ${EIGEN3_VERSION}")
+
+# Compilation
+
+  add_executable(${PROJECT_NAME} main.cpp)
+  target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIRS})
