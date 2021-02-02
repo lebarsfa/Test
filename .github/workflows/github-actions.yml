@@ -42,8 +42,7 @@ jobs:
       shell: pwsh
     - run: wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv & choco install -y eigen.3.3.4.nupkg
     - run: |
+        refreshenv
         cmake ${{ matrix.cfg.cmake_params }} .
         cmake --build . --config Release
-        /Release/my_project.exe
-        cd ../..
-      shell: bash
+        .\Release\my_project.exe
