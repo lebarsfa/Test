@@ -40,9 +40,9 @@ jobs:
         (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
-    - run: wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv & choco install -y eigen.3.3.4.nupkg
     - run: |
-        cmd //c refreshenv
+        wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv
+        choco install -y eigen.3.3.4.nupkg
         cmake ${{ matrix.cfg.cmake_params }} .
         cmake --build . --config Release
         ./Release/my_project.exe
