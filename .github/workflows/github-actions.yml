@@ -41,7 +41,8 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
     - run: |
-        where cmake        
+        where cmake
+        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages /f
         wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv
         choco install -y -s . eigen & dir "C:\ProgramData\chocolatey\lib\Eigen\share\cmake" & reg query HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages & refreshenv & cmake ${{ matrix.cfg.cmake_params }} . & cmake --build . --config Release & .\Release\my_project.exe
       shell: cmd
