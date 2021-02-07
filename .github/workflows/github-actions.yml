@@ -25,17 +25,15 @@ jobs:
         python -c "import sys; print(sys.version)"
         gcc --version
         g++ --version
+
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
-        sudo pip install sphinx sphinx_rtd_theme breathe sphinx-issues sphinx-tabs
+        sudo python -m pip install --upgrade pip
+        sudo pip install --upgrade pyIbex
+        sudo pip install --upgrade wheel setuptools
+        sudo pip install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
         sudo apt-get -y install doxygen graphviz
-
-        # For Python wrapping
-        #sudo pip install wheel
-        #sudo pip install --upgrade pip
-        #sudo pip install pyibex
-        #sudo pip install --upgrade pyibex==1.8.0
       env:
         CC: ${{ matrix.cfg.cc }}
         CXX: ${{ matrix.cfg.cxx }}
