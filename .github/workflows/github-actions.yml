@@ -7,9 +7,6 @@ on:
 jobs:
  tests:
     runs-on: ${{ matrix.cfg.os }}
-    env:
-        CC: ${{ matrix.cfg.cc }}
-        CXX: ${{ matrix.cfg.cxx }}
     strategy:
         matrix:
             cfg:
@@ -28,7 +25,6 @@ jobs:
         python -c "import sys; print(sys.version)"
         gcc --version
         g++ --version
-    - run: |
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
@@ -40,3 +36,6 @@ jobs:
         #sudo pip install --upgrade pip
         #sudo pip install pyibex
         #sudo pip install --upgrade pyibex==1.8.0
+      env:
+        CC: ${{ matrix.cfg.cc }}
+        CXX: ${{ matrix.cfg.cxx }}
