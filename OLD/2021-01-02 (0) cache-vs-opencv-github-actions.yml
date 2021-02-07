@@ -31,9 +31,16 @@ jobs:
     - run: |
         echo 0
         rem Comment
+        echo "C:\directory\to\add\to\path" >> $GITHUB_PATH
         echo 1
+      shell: cmd
     - run: |
         # Comment
+        echo "C:\directory\to\add\to\path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: pwsh
+    - run: |
+        # Comment
+        echo "C:\directory\to\add\to\path" >> $GITHUB_PATH
         perl -v
         sed --version
       shell: bash
