@@ -30,11 +30,15 @@ jobs:
         python3 -c "import sys; print(sys.version)"
         python -m pip --version
         python3 -m pip --version
+        sudo python -m pip --version
+        sudo python3 -m pip --version
         pip --version
         pip3 --version
+        sudo pip --version
+        sudo pip3 --version
 
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
-        sudo pip3 install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
+        sudo python -m pip install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
         sudo apt-get -y install doxygen graphviz
