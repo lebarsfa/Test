@@ -27,20 +27,35 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: windows-2019, shell: cmd, arch: x86, runtime: vc14, cmake_params: '-G "Visual Studio 14" -A Win32' }
-#            - { os: windows-2019, shell: cmd, arch: x64, runtime: vc16, cmake_params: '-G "Visual Studio 16" -A x64' }
+            - { os: windows-2019, shell: cmd, arch: x86, runtime: mingw, cmake_params: '-G "MSYS Makefiles"', desc: 'Windows Qt' }
     steps: 
     - uses: actions/checkout@v2
       with:
         submodules: true
         fetch-depth: 0
         clean: false
-#    - run: choco install -y -r --no-progress wget
     - run: |
         (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
+      if: contains(matrix.cfg.os, 'windows')
     - run: |
-        wget https://github.com/ros2/choco-packages/releases/download/2020-02-24/eigen.3.3.4.nupkg --no-check-certificate -nv        
-        choco install -y -s . eigen & reg add HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages\Eigen3 /v "CMakePackageDir" /t REG_SZ /d "C:\ProgramData\chocolatey\lib\eigen\share\cmake" /f & dir "C:\ProgramData\chocolatey\lib\Eigen\share\cmake" & reg query HKEY_LOCAL_MACHINE\SOFTWARE\Kitware\CMake\Packages & refreshenv & cmake ${{ matrix.cfg.cmake_params }} . & cmake --build . --config Release & .\Release\my_project.exe
+        rem Take 5 min...
+        rem choco uninstall -y mingw strawberryperl
+        wget http://www.ensta-bretagne.fr/lebars/Share/qt-sdk-win-opensource-2010.05.exe --no-check-certificate -nv
+        move /Y qt-sdk-win-opensource-2010.05.exe %SystemDrive%\
+        rem Take several min...
+        %SystemDrive%\qt-sdk-win-opensource-2010.05.exe /S
+        del /f /q %SystemDrive%\qt-sdk-win-opensource-2010.05.exe
+        rem PATH
+        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
+        %SystemDrive%\cmake_extra_tools\pathman /as C:\Qt\2010.05\qt\bin;C:\Qt\2010.05\bin;C:\Qt\2010.05\mingw\bin & true & rem Non-zero exit code...?
       shell: cmd
+      if: contains(matrix.cfg.os, 'windows')
+   - run: |
+        cmake ${{ matrix.cfg.cmake_params }} .
+        cmake --build .
+        ./Hello
+        cd ../..
+      shell: bash

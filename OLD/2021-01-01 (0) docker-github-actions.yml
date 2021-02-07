@@ -5,7 +5,7 @@ on:
         tags: '' # Restrict to blank tags
     pull_request:
 jobs:
- # This job can be removed if a new release should not be created...
+ # This job may be commented if a new release should not be created...
  deploy:
     runs-on: ubuntu-latest
     steps: 
