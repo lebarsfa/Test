@@ -10,7 +10,7 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: ubuntu-18.04, cc: gcc-8, cxx: g++-8, py_v_maj: 3, py_v_min: 6, desc: 'Ubuntu 18.04 GCC 8 Python 3.6 tests' }
+            - { os: ubuntu-18.04, cc: gcc-8, cxx: g++-8, py_v_maj: 3, py_v_min: 7, desc: 'Ubuntu 18.04 GCC 8 Python 3.7 tests' }
     name: ${{ matrix.cfg.desc }}
     steps: 
     - uses: actions/checkout@v2
@@ -29,9 +29,6 @@ jobs:
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
-        sudo python -m pip install --upgrade pip
-        sudo pip install --upgrade pyIbex
-        sudo pip install --upgrade wheel setuptools
         sudo pip install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
         sudo apt-get -y install doxygen graphviz
       env:
