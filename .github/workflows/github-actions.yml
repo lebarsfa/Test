@@ -56,10 +56,9 @@ jobs:
         where g++
       shell: cmd
       if: runner.os == 'Windows'
-#    - run: |
-#        cmake ${{ matrix.cfg.cmake_params }} .
-#        cmake --build .
-#        ./Hello
-#        cd ../..
-#      shell: bash
-#
+    - run: |
+        cmake ${{ matrix.cfg.cmake_params }} .
+        cmake --build .
+        ./Hello
+        cd ../..
+      shell: bash
