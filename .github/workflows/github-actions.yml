@@ -53,7 +53,7 @@ jobs:
         %SystemDrive%\cmake_extra_tools\pathman /as C:\Qt\2010.05\qt\bin;C:\Qt\2010.05\bin;C:\Qt\2010.05\mingw\bin & true & rem Non-zero exit code...?
       shell: cmd
       if: contains(matrix.cfg.os, 'windows')
-   - run: |
+    - run: |
         cmake ${{ matrix.cfg.cmake_params }} .
         cmake --build .
         ./Hello
