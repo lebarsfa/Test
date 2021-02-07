@@ -39,17 +39,10 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
       if: runner.os == 'Windows'
-    # Comment
     - run: |
-        echo 0
-        rem Comment
-        echo C:\directory\to\add\to\path>>%GITHUB_PATH%
-        echo 1
-      shell: cmd
-#    - run: |
-#        # Comment
-#        echo "C:\directory\to\add\to\path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-#      shell: pwsh
+        # Comment
+        echo "C:\directory\to\add\to\path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: pwsh
 #    - run: |        
 #        rem Take 8 min...
 #        rem choco uninstall -y mingw strawberryperl
