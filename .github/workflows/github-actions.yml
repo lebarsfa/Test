@@ -42,5 +42,5 @@ jobs:
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
-        pip install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
+        pip install sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
         sudo apt-get -y install doxygen graphviz
