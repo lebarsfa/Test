@@ -39,24 +39,17 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
       if: runner.os == 'Windows'
-    - run: |
-        # Comment
-        echo "C:\directory\to\add\to\path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      shell: pwsh
-#    - run: |        
-#        rem Take 8 min...
-#        rem choco uninstall -y mingw strawberryperl
-#        wget http://www.ensta-bretagne.fr/lebars/Share/qt-sdk-win-opensource-2010.05.exe --no-check-certificate -nv
-#        move /Y qt-sdk-win-opensource-2010.05.exe %SystemDrive%\
-#        rem Take 5 min...
-#        %SystemDrive%\qt-sdk-win-opensource-2010.05.exe /S
-#        del /f /q %SystemDrive%\qt-sdk-win-opensource-2010.05.exe
-#        rem PATH
-#        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
-#        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
-#        %SystemDrive%\cmake_extra_tools\pathman /as C:\Qt\2010.05\qt\bin;C:\Qt\2010.05\bin;C:\Qt\2010.05\mingw\bin & true & rem Non-zero exit code...?
-#      shell: cmd
-#      if: contains(matrix.cfg.os, 'windows')
+    - run: |        
+        rem Take 8 min...
+        rem choco uninstall -y mingw strawberryperl
+        wget http://www.ensta-bretagne.fr/lebars/Share/qt-sdk-win-opensource-2010.05.exe --no-check-certificate -nv
+        move /Y qt-sdk-win-opensource-2010.05.exe %SystemDrive%\
+        rem Take 5 min...
+        %SystemDrive%\qt-sdk-win-opensource-2010.05.exe /S
+        del /f /q %SystemDrive%\qt-sdk-win-opensource-2010.05.exe
+        echo C:\Qt\2010.05\qt\bin;C:\Qt\2010.05\bin;C:\Qt\2010.05\mingw\bin>>%GITHUB_PATH%
+      shell: cmd
+      if: contains(matrix.cfg.os, 'windows')
     - run: |
         echo %PATH%
         where gcc
