@@ -10,7 +10,7 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: ubuntu-18.04, cc: gcc-8, cxx: g++-8, py_v_maj: 3, py_v_min: 7, desc: 'Ubuntu 18.04 GCC 8 Python 3.7 tests' }
+            - { os: ubuntu-18.04-gcc-8, py_v_maj: 3, py_v_min: 6, desc: 'Ubuntu 18.04 GCC 8 Python 3.6 tests' }
     name: ${{ matrix.cfg.desc }}
     steps: 
     - uses: actions/checkout@v2
@@ -22,15 +22,12 @@ jobs:
       with:
         python-version: ${{ matrix.cfg.py_v_maj }}.${{ matrix.cfg.py_v_min }}
     - run: |
-        python -c "import sys; print(sys.version)"
+        python3 -c "import sys; print(sys.version)"
         gcc --version
         g++ --version
 
         sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
   
         # For documentation
-        sudo pip install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
+        sudo pip3 install --upgrade sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
         sudo apt-get -y install doxygen graphviz
-      env:
-        CC: ${{ matrix.cfg.cc }}
-        CXX: ${{ matrix.cfg.cxx }}
