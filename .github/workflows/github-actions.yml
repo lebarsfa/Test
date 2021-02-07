@@ -40,13 +40,22 @@ jobs:
       shell: pwsh
       if: runner.os == 'Windows'
     # Comment
+#    - run: |
+#        echo 0
+#        rem Comment
+#        echo "C:\directory\to\add\to\path" >> %GITHUB_PATH%
+#        echo 1
+#      shell: cmd
+#    - run: |
+#        # Comment
+#        echo "C:\directory\to\add\to\path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+#      shell: pwsh
     - run: |
-        echo 0
-        rem Comment
+        # Comment
         echo "C:\directory\to\add\to\path" >> $GITHUB_PATH
-        echo 1
-      shell: cmd
-      if: runner.os == 'Windows'
+        perl -v
+        sed --version
+      shell: bash
 #    - run: |        
 #        rem Take 8 min...
 #        rem choco uninstall -y mingw strawberryperl

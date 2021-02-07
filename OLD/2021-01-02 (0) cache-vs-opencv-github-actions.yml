@@ -31,7 +31,7 @@ jobs:
     - run: |
         echo 0
         rem Comment
-        echo "C:\directory\to\add\to\path" >> $GITHUB_PATH
+        echo "C:\directory\to\add\to\path" >> %GITHUB_PATH%
         echo 1
       shell: cmd
     - run: |
