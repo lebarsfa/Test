@@ -38,10 +38,13 @@ jobs:
         (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
-      if: contains(matrix.cfg.os, 'windows')
-    - run: |
-        rem Take 5 min...
-        choco uninstall -y mingw strawberryperl
+      if: runner.os == 'Windows'
+    - run: |        
+        rem choco uninstall -y mingw strawberryperl & rem Take 8 min...
+        wget http://www.ensta-bretagne.fr/lebars/Share/qt-sdk-win-opensource-2010.05.exe --no-check-certificate -nv
+        move /Y qt-sdk-win-opensource-2010.05.exe %SystemDrive%\        
+        %SystemDrive%\qt-sdk-win-opensource-2010.05.exe /S & rem Take 5 min...
+        del /f /q %SystemDrive%\qt-sdk-win-opensource-2010.05.exe
         rem PATH
         wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
@@ -52,7 +55,7 @@ jobs:
         where gcc
         where g++
       shell: cmd
-      if: contains(matrix.cfg.os, 'windows')
+      if: runner.os == 'Windows'
 #    - run: |
 #        cmake ${{ matrix.cfg.cmake_params }} .
 #        cmake --build .
