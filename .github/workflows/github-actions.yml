@@ -39,11 +39,11 @@ jobs:
         wget http://www.ensta-bretagne.fr/lebars/Share/LabJack-2019-05-20.zip --no-check-certificate -nv
         echo Downloaded
         7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
-        regedit /s %SystemDrive%\LabJack-2019-05-20\Certificates.reg
-        %SystemDrive%\LabJack-2019-05-20\LabJack-2019-05-20.exe /S
+        regedit /s %SystemDrive%\Certificates.reg
+        start %SystemDrive%\LabJack-2019-05-20.exe /S
         echo Installing...
         wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
         %SystemDrive%\cmake_extra_tools\sleep 60
-        TASKKILL /F /IM LVRunTimeEng.exe /T
+        TASKKILL /F /IM LVRunTimeEng.exe /T & cd. & rem Non-zero exit code...
       shell: cmd
