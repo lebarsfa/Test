@@ -5,42 +5,51 @@ on:
     pull_request:
 
 jobs:
- tests:
-    runs-on: ${{ matrix.cfg.os }}
-    strategy:
-        matrix:
-            cfg:
-            - { os: ubuntu-18.04, gcc_v: 8, py_v_maj: 3, py_v_min: 6, desc: 'Ubuntu 18.04 GCC 8 Python 3.6 tests' }
-    name: ${{ matrix.cfg.desc }}
+ # This job may be commented if a new release should not be created...
+# deploy:
+#    runs-on: ubuntu-latest
+#    steps: 
+#    - uses: actions/create-release@v1
+#      id: create_release
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        draft: true
+#        tag_name: autotagname
+#        release_name: autotagname
+
+ jtestlj:
+    name: Windows
+    runs-on: windows-latest
     steps: 
     - uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 0
-        clean: false
-    - uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.cfg.py_v_maj }}.${{ matrix.cfg.py_v_min }}
     - run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{ matrix.cfg.gcc_v }} 100 --slave /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.cfg.gcc_v }}
-        gcc --version
-        g++ --version
-
-        python -c "import sys; print(sys.version)"
-        python3 -c "import sys; print(sys.version)"
-        sudo python -c "import sys; print(sys.version)"
-        sudo python3 -c "import sys; print(sys.version)"
-        python -m pip --version
-        python3 -m pip --version
-        sudo python -m pip --version
-        sudo python3 -m pip --version
-        pip --version
-        pip3 --version
-        sudo pip --version
-        sudo pip3 --version
-
-        sudo apt-get -q update ; sudo apt-get -y install flex bison libeigen3-dev || true
-  
-        # For documentation
-        pip install sphinx breathe sphinx-issues sphinx-tabs sphinx_rtd_theme
-        sudo apt-get -y install doxygen graphviz
+        (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
+        7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
+      shell: pwsh
+    - run: |
+        choco list --localonly
+        wget https://github.com/jmalarcon/DotNetVersions/releases/download/v1.0.0/DotNetVersions.zip --no-check-certificate -nv
+        unzip -q DotNetVersions.zip
+        DotNetVersions.exe
+      shell: cmd
+    - run: |
+        rem For LabJack
+        rem https://dirteam.com/sander/2018/11/20/important-issues-in-windows-server-2019-build-10-0-17763-1-release-notes/
+        wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_2019_sxs.zip --no-check-certificate -nv
+        7z x windows_server_2019_sxs.zip -o"%SystemDrive%" -y
+        Dism /online /enable-feature /featurename:NetFx3 /All /Source:%SystemDrive%\sxs /NoRestart
+        choco install -y dotnet3.5 
+        choco install -y vcredist-all
+      shell: cmd
+    - run: |
+        rem For LabJack
+        wget http://www.ensta-bretagne.fr/lebars/Share/LabJack-2019-05-20.zip --no-check-certificate -nv
+        7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
+        regedit /s %SystemDrive%\LabJack-2019-05-20\Certificates.reg
+        start %SystemDrive%\LabJack-2019-05-20\LabJack-2019-05-20.exe /S
+        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
+        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
+        %SystemDrive%\cmake_extra_tools\sleep 60
+        TASKKILL /F /IM LVRunTimeEng.exe /T
+      shell: cmd
