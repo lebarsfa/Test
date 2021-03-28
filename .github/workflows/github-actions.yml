@@ -28,19 +28,11 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
     - run: |
-        choco list --localonly
+        #choco list --localonly
+        choco install -y vcredist-all
         wget https://github.com/jmalarcon/DotNetVersions/releases/download/v1.0.0/DotNetVersions.zip --no-check-certificate -nv
         unzip -q DotNetVersions.zip
-        DotNetVersions.exe
-      shell: cmd
-    - run: |
-        rem For LabJack
-        rem https://dirteam.com/sander/2018/11/20/important-issues-in-windows-server-2019-build-10-0-17763-1-release-notes/
-        wget http://www.ensta-bretagne.fr/lebars/Share/windows_server_2019_sxs.zip --no-check-certificate -nv
-        7z x windows_server_2019_sxs.zip -o"%SystemDrive%" -y
-        Dism /online /enable-feature /featurename:NetFx3 /All /Source:%SystemDrive%\sxs /NoRestart
-        choco install -y dotnet3.5 
-        choco install -y vcredist-all
+        DotNetVersions.exe & cd. & rem Non-zero exit code...
       shell: cmd
     - run: |
         rem For LabJack
