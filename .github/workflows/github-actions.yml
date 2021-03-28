@@ -28,7 +28,7 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
     - run: |
-        rem choco list --localonly
+        choco list --localonly
         rem choco install -y vcredist-all
         wget https://github.com/jmalarcon/DotNetVersions/releases/download/v1.0.0/DotNetVersions.zip --no-check-certificate -nv
         unzip -q DotNetVersions.zip
