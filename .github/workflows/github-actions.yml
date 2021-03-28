@@ -37,6 +37,7 @@ jobs:
     - run: |
         rem For LabJack
         wget http://www.ensta-bretagne.fr/lebars/Share/LabJack-2019-05-20.zip --no-check-certificate -nv
+        echo Downloaded
         7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
         regedit /s %SystemDrive%\LabJack-2019-05-20\Certificates.reg
         %SystemDrive%\LabJack-2019-05-20\LabJack-2019-05-20.exe /S
