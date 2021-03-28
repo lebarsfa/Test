@@ -40,7 +40,7 @@ jobs:
         echo Downloaded
         7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
         regedit /s %SystemDrive%\Certificates.reg
-        start %SystemDrive%\LabJack-2019-05-20.exe /S
+        cmd /c "start %SystemDrive%\LabJack-2019-05-20.exe /S"
         echo Installing...
         wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
