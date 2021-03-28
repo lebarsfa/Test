@@ -28,8 +28,8 @@ jobs:
         7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
       shell: pwsh
     - run: |
-        #choco list --localonly
-        choco install -y vcredist-all
+        rem choco list --localonly
+        rem choco install -y vcredist-all
         wget https://github.com/jmalarcon/DotNetVersions/releases/download/v1.0.0/DotNetVersions.zip --no-check-certificate -nv
         unzip -q DotNetVersions.zip
         DotNetVersions.exe & cd. & rem Non-zero exit code...
@@ -39,7 +39,8 @@ jobs:
         wget http://www.ensta-bretagne.fr/lebars/Share/LabJack-2019-05-20.zip --no-check-certificate -nv
         7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
         regedit /s %SystemDrive%\LabJack-2019-05-20\Certificates.reg
-        start %SystemDrive%\LabJack-2019-05-20\LabJack-2019-05-20.exe /S
+        %SystemDrive%\LabJack-2019-05-20\LabJack-2019-05-20.exe /S
+        echo Installing...
         wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
         7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
         %SystemDrive%\cmake_extra_tools\sleep 60
