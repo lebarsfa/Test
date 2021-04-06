@@ -37,6 +37,7 @@ jobs:
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
     - run: |
         uname -a
+        apt-get -q update && apt-get -y install lsb-release && lsb_release -a
 #        cmake .
 
 # container: ${{ matrix.cfg.container }} cannot be empty, pi does not work, the containers don't have cmake...->self-hosted runners but no i386 but maybe possible to configure amd64 so that it acts like an i386...?
