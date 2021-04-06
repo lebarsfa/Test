@@ -34,3 +34,5 @@ jobs:
 #    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #      if: contains(matrix.cfg.container, 'pi')
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
+    - run: |
+        uname -a
