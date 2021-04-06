@@ -26,7 +26,7 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'amd64/ubuntu:${{ runtime }}', desc: 'Ubuntu 18.04 amd64' }
+            - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'amd64/ubuntu:bionic', desc: 'Ubuntu 18.04 amd64' }
             - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
             - { os: ubuntu-latest, shell: bash, arch: i386, runtime: trusty, container: 'i386/ubuntu:trusty', desc: 'Ubuntu 14.04 x86' }
 #            - { os: ubuntu-latest, shell: bash, arch: armhf, runtime: buster, container: 'lebarsfa/pi:buster', desc: 'pi' }
@@ -36,7 +36,7 @@ jobs:
 #      if: contains(matrix.cfg.container, 'pi')
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
     - run: |
-        uname -a
+        uname -a && cat /etc/os-release
         apt-get -q update && apt-get -y install lsb-release && lsb_release -a
 #        cmake .
 
