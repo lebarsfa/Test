@@ -21,6 +21,8 @@ jobs:
     runs-on: ${{ matrix.cfg.os }}
     container:
       image: ${{ matrix.cfg.container }}
+      if: ${{ matrix.cfg.os }}=='Windows'
+
     defaults:
         run:
             shell: ${{ matrix.cfg.shell }}
