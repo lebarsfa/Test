@@ -1,9 +1,9 @@
-on:
+#on: [push, pull_request]
+on: 
     push:
         branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
-
 jobs:
  # This job may be commented if a new release should not be created...
 # deploy:
@@ -17,33 +17,21 @@ jobs:
 #        draft: true
 #        tag_name: autotagname
 #        release_name: autotagname
-
- jtestlj:
-    name: Windows
-    runs-on: windows-2019
+ matrix:
+    runs-on: ${{ matrix.cfg.os }}
+    container:
+      image: ${{ matrix.cfg.container }}
+    defaults:
+        run:
+            shell: ${{ matrix.cfg.shell }}
+    strategy:
+        matrix:
+            cfg:
+            - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, desc: 'Ubuntu 18.04 amd64' }
+            - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
+    name: ${{ matrix.cfg.desc }}
     steps: 
     - uses: actions/checkout@v2
     - run: |
-        (New-Object System.Net.WebClient).DownloadFile("http://www.ensta-bretagne.fr/lebars/Share/windows_extra_tools.zip", "C:\Windows\Temp\windows_extra_tools.zip") 
-        7z x C:\Windows\Temp\windows_extra_tools.zip -o"C:\Windows" -y
-      shell: pwsh
-    - run: |
-        choco list --localonly
-        rem choco install -y vcredist-all
-        wget https://github.com/jmalarcon/DotNetVersions/releases/download/v1.0.0/DotNetVersions.zip --no-check-certificate -nv
-        unzip -q DotNetVersions.zip
-        DotNetVersions.exe & cd. & rem Non-zero exit code...
-      shell: cmd
-    - run: |
-        rem For LabJack
-        wget http://www.ensta-bretagne.fr/lebars/Share/LabJack-2019-05-20.zip --no-check-certificate -nv
-        echo Downloaded
-        7z x LabJack-2019-05-20.zip -o"%SystemDrive%" -y
-        regedit /s %SystemDrive%\Certificates.reg
-        cmd /c "start %SystemDrive%\LabJack-2019-05-20.exe /S"
-        echo Installing...
-        wget http://www.ensta-bretagne.fr/lebars/Share/cmake_extra_tools.zip --no-check-certificate -nv
-        7z x cmake_extra_tools.zip -o"%SystemDrive%" -y
-        %SystemDrive%\cmake_extra_tools\sleep 60
-        TASKKILL /F /IM LVRunTimeEng.exe /T & cd. & rem Non-zero exit code...
-      shell: cmd
+        cmake
+        cmake --build .
