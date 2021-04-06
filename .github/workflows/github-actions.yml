@@ -38,4 +38,4 @@ jobs:
         uname -a
         cmake .
 
-# pi does not work, the containers don't have cmake...
+# container: ${{ matrix.cfg.container }} cannot be empty, pi does not work, the containers don't have cmake...->self-hosted runners but no i386 but maybe possible to configure amd64 so that it acts like an i386...?
