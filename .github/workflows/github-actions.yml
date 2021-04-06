@@ -26,8 +26,8 @@ jobs:
     strategy:
         matrix:
             cfg:
-            - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'i386/ubuntu:${{ matrix.cfg.runtime }}', desc: 'Ubuntu 18.04 x86' }
-            - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:${{ matrix.cfg.runtime }}', desc: 'Ubuntu 16.04 x86' }
+            - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'i386/ubuntu:bionic', desc: 'Ubuntu 18.04 x86' }
+            - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
     name: ${{ matrix.cfg.desc }}
     steps: 
     - uses: actions/checkout@v2
