@@ -28,7 +28,7 @@ jobs:
             cfg:
             - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'amd64/ubuntu:bionic', desc: 'Ubuntu 18.04 amd64' }
             - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
-            - { os: ubuntu-latest, shell: bash, arch: armhf, runtime: buster, container: 'lebarsfa/pi:buster', desc: 'pi' }
+#            - { os: ubuntu-latest, shell: bash, arch: armhf, runtime: buster, container: 'lebarsfa/pi:buster', desc: 'pi' }
     name: ${{ matrix.cfg.desc }}
     steps: 
 #    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -36,3 +36,6 @@ jobs:
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
     - run: |
         uname -a
+        cmake .
+
+# pi does not work, the containers don't have cmake...
