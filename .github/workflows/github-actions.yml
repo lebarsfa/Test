@@ -37,9 +37,8 @@ jobs:
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
     - run: |
         sudo apt-get -q update || true
-        sudo apt-get remove -y libgtk2.0-cil
-        #sudo apt-get autoremove -y
-        sudo apt-get install -y libopencv-dev libgtk2.0 # libgtk2.0 cannot be installed due to another version already installed...?
+        sudo apt-get remove -y libgtk2.0-cil ; sudo apt-get autoremove -y # libgtk2.0 cannot be installed due to incompatible packages already installed...?
+        sudo apt-get install -y libopencv-dev libgtk2.0
 #        uname -a && cat /etc/os-release
 #        apt-get -q update && apt-get -y install lsb-release && lsb_release -a
 #        cmake .
