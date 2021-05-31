@@ -19,7 +19,7 @@ jobs:
 #        release_name: autotagname
  matrix:
     runs-on: ${{ matrix.cfg.os }}
-    container: ${{ matrix.cfg.container }}
+#    container: ${{ matrix.cfg.container }}
     defaults:
         run:
             shell: ${{ matrix.cfg.shell }}
