@@ -38,7 +38,7 @@ jobs:
     - run: |
         sudo apt-get -q update || true
         sudo apt-get remove -y libgtk2.0-cil
-        sudo apt-get autoremove -y
+        #sudo apt-get autoremove -y
         sudo apt-get install -y libopencv-dev libgtk2.0 # libgtk2.0 cannot be installed due to another version already installed...?
 #        uname -a && cat /etc/os-release
 #        apt-get -q update && apt-get -y install lsb-release && lsb_release -a
