@@ -22,7 +22,7 @@ jobs:
 #        release_name: autotagname
  matrix:
     runs-on: ${{ matrix.cfg.os }}
-    container: ${{ matrix.cfg.container }}
+#    container: ${{ matrix.cfg.container }}
     defaults:
         run:
             shell: ${{ matrix.cfg.shell }}
@@ -30,8 +30,8 @@ jobs:
         matrix:
             cfg:
             - { os: ubuntu-18.04, shell: bash, arch: amd64, runtime: bionic, container: 'amd64/ubuntu:bionic', desc: 'Ubuntu 18.04 amd64' }
-            - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
-            - { os: ubuntu-latest, shell: bash, arch: i386, runtime: trusty, container: 'i386/ubuntu:trusty', desc: 'Ubuntu 14.04 x86' }
+#            - { os: ubuntu-16.04, shell: bash, arch: i386, runtime: xenial, container: 'i386/ubuntu:xenial', desc: 'Ubuntu 16.04 x86' }
+#            - { os: ubuntu-latest, shell: bash, arch: i386, runtime: trusty, container: 'i386/ubuntu:trusty', desc: 'Ubuntu 14.04 x86' }
 #            - { os: ubuntu-latest, shell: bash, arch: armhf, runtime: buster, container: 'lebarsfa/pi:buster', desc: 'pi' }
     name: ${{ matrix.cfg.desc }}
     steps: 
