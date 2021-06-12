@@ -1,8 +1,8 @@
 #on: [push, pull_request]
 on: 
-    release:
-        types: [published]
-#    push:
+#    release:
+#        types: [published]
+    push:
 #        branches: '**'
         branches: 'master'
 #        tags: '' # Restrict to blank tags
@@ -57,7 +57,7 @@ jobs:
       if: runner.os=='Linux'
     - run: |
         uname -a && cat /etc/os-release
-        apt-get -q update && apt-get -y install lsb-release && lsb_release -a
+#        apt-get -q update && apt-get -y install lsb-release && lsb_release -a
 #        cmake .
 
 # container: ${{ matrix.cfg.container }} cannot be empty, pi does not work, the containers don't have cmake...->self-hosted runners but no i386 but maybe possible to configure amd64 so that it acts like an i386...?
