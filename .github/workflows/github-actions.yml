@@ -1,14 +1,13 @@
 #on: [push, pull_request]
 on: 
-#    release:
-#        types: [published]
     push:
         branches: 'master'
-        tags: 
-        - 'v*.*.*'
+        tags: 'v*.*.*'
 #        branches: '**'
 #        tags: '' # Restrict to blank tags
 #    pull_request:
+#    release:
+#        types: [published]
 jobs:
  # This job may be commented if a new release should not be created...
 # deploy:
