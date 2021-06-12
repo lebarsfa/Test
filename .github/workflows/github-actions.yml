@@ -6,7 +6,7 @@ on:
 #        branches: '**'
         branches: 'master'
 #        tags: '' # Restrict to blank tags
-        tags: 'ibex-*.*.*'
+        tags: 'v*.*.*'
 #    pull_request:
 jobs:
  # This job may be commented if a new release should not be created...
