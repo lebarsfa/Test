@@ -1,9 +1,12 @@
 #on: [push, pull_request]
 on: 
-    push:
-        branches: '**'
-        tags: '' # Restrict to blank tags
-    pull_request:
+    release:
+#    push:
+#        branches: '**'
+        branches: 'master'
+#        tags: '' # Restrict to blank tags
+        tags: 'ibex-*.*.*'
+#    pull_request:
 jobs:
  # This job may be commented if a new release should not be created...
 # deploy:
@@ -35,6 +38,22 @@ jobs:
 #    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 #      if: contains(matrix.cfg.container, 'pi')
     - uses: actions/checkout@v1 # https://github.community/t/actions-checkout-v2-fails-in-32bit-container/165539/2
+      # From https://github.com/Munkei/VersionFromGit.cmake/blob/master/VersionFromGit.cmake
+    - run: echo "git_tag=`git describe --tags --abbrev=0`" >> $GITHUB_ENV
+      shell: bash
+      # See https://askubuntu.com/questions/620533/what-is-the-meaning-of-the-xubuntuy-string-in-ubuntu-package-names
+    - run: |
+        echo "SOFTWARE_VERSION=${git_tag:5}" >> $GITHUB_ENV
+        echo "DEBIAN_PACKAGE_REV=0" >> $GITHUB_ENV
+        echo "PACKAGE_REV=0" >> $GITHUB_ENV
+        echo "CHOCO_PACKAGE_REV=" >> $GITHUB_ENV
+      shell: bash
+    - run: if [ -z "$CHOCO_PACKAGE_REV" ]; then echo "PACKAGE_VERSION=$SOFTWARE_VERSION" >> $GITHUB_ENV ; else echo "PACKAGE_VERSION=$SOFTWARE_VERSION.$CHOCO_PACKAGE_REV" >> $GITHUB_ENV ; fi
+      shell: bash
+      if: runner.os=='Windows'
+    - run: echo "PACKAGE_VERSION=$SOFTWARE_VERSION-${DEBIAN_PACKAGE_REV}${{ matrix.cfg.runtime }}$PACKAGE_REV" >> $GITHUB_ENV
+      shell: bash
+      if: runner.os=='Linux'
     - run: |
         uname -a && cat /etc/os-release
         apt-get -q update && apt-get -y install lsb-release && lsb_release -a
