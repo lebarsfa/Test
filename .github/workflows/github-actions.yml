@@ -3,10 +3,11 @@ on:
 #    release:
 #        types: [published]
     push:
-#        branches: '**'
         branches: 'master'
+        tags: 
+        - 'v*.*.*'
+#        branches: '**'
 #        tags: '' # Restrict to blank tags
-        tags: 'v*.*.*'
 #    pull_request:
 jobs:
  # This job may be commented if a new release should not be created...
