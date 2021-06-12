@@ -1,8 +1,8 @@
 #on: [push, pull_request]
 on: 
     push:
-        branches: 'test'
-        tags: 'v*.*.*'
+        branches: 'master'
+        tags: 'vtest'
 #        branches: '**'
 #        tags: '' # Restrict to blank tags
 #    pull_request:
