@@ -15,8 +15,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: true
-        tag_name: autotagname
-        release_name: autotagname
+        tag_name: "${GITHUB_REF#refs/*/}-${{ github.event.head_commit.message }}"
+        release_name: "${GITHUB_REF#refs/*/}-${{ github.event.head_commit.message }}"
 
  tex:
     runs-on: ubuntu-latest
@@ -33,4 +33,4 @@ jobs:
       with:
         file: "Frontiers_LaTex_Templates/frontiers.pdf"
         overwrite: true
-        tag_name: autotagname
+        tag_name: "${GITHUB_REF#refs/*/}-${{ github.event.head_commit.message }}"
