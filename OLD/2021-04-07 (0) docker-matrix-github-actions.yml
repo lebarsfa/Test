@@ -4,19 +4,8 @@ on:
         branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
+    #pull_request_target: # This would have the advantage to be able to get the release using the existing actions, which could cause confusions...
 jobs:
- # This job may be commented if a new release should not be created...
-# deploy:
-#    runs-on: ubuntu-latest
-#    steps: 
-#    - uses: actions/create-release@v1
-#      id: create_release
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        draft: true
-#        tag_name: autotagname
-#        release_name: autotagname
  matrix:
     runs-on: ${{ matrix.cfg.os }}
     container: ${{ matrix.cfg.container }}

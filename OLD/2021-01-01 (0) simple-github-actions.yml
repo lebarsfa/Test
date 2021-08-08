@@ -10,8 +10,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: true
-        tag_name: autotagname
-        release_name: autotagname
+        tag_name: autotagname-${{ github.sha }}
+        release_name: autotagname-${{ github.sha }}
+      if: github.event_name != 'pull_request'
  build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -39,4 +40,5 @@ jobs:
       with:
         file: "${{ matrix.deploy-file }}"
         overwrite: true
-        tag_name: autotagname
+        tag_name: autotagname-${{ github.sha }}
+      if: github.event_name != 'pull_request'

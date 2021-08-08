@@ -4,6 +4,7 @@ on:
         branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
+    #pull_request_target: # This would have the advantage to be able to get the release using the existing actions, which could cause confusions...
 jobs:
  # This job may be commented if a new release should not be created...
 # deploy:
@@ -15,8 +16,9 @@ jobs:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      with:
 #        draft: true
-#        tag_name: autotagname
-#        release_name: autotagname
+#        tag_name: autotagname-${{ github.sha }}
+#        release_name: autotagname-${{ github.sha }}
+#      if: github.event_name != 'pull_request'
  matrix:
     runs-on: ${{ matrix.cfg.os }}
     defaults:
@@ -91,4 +93,5 @@ jobs:
       with:
         file: "./Release/DisplayImage.exe"
         overwrite: true
-        tag_name: autotagname
+        tag_name: autotagname-${{ github.sha }}
+      if: github.event_name != 'pull_request'
