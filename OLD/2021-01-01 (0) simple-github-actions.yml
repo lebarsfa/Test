@@ -24,12 +24,11 @@ jobs:
     strategy:
         matrix:
             os: [ubuntu-latest, windows-latest]
-            python-version: [3.8]
+            python-version: [3.10]
             include:
             - os: ubuntu-latest
               deploy-file: ./Hello
             - os: windows-latest
-              shell: bash
               deploy-file: ./Debug/Hello.exe
     steps: 
     - uses: actions/checkout@v2
@@ -40,6 +39,7 @@ jobs:
         cmake . && cmake --build . && ${{ matrix.deploy-file }}
         python -c "import sys; print(sys.version)"
         ls -l
+      shell: bash
     - uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
