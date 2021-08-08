@@ -1,8 +1,7 @@
 #on: [push, pull_request]
 on: 
     push:
-        #branches: '**'
-        branches: 'main'
+        branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
     #pull_request_target: # This would run the old version of the actions, which could cause confusions...

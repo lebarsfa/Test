@@ -1,8 +1,7 @@
 #on: [push, pull_request]
 on: 
     push:
-        #branches: '**'
-        branches: 'main'
+        branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
     #pull_request_target: # This would run the old version of the actions, which could cause confusions...
@@ -38,7 +37,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
-        cmake . && cmake --build .
+        cmake . && cmake --build . && ${{ matrix.deploy-file }}
         python -c "import sys; print(sys.version)"
         ls -l
     - uses: xresloader/upload-to-github-release@v1
