@@ -1,10 +1,8 @@
-#on: [push, pull_request]
 on: 
     push:
         branches: '**'
         tags: '' # Restrict to blank tags
     pull_request:
-    #pull_request_target: # This would run the old version of the actions, which could cause confusions...
 jobs:
  # This job may be commented if a new release should not be created...
  deploy:
@@ -19,32 +17,17 @@ jobs:
         tag_name: autotagname-${{ github.sha }}
         release_name: autotagname-${{ github.sha }}
       if: github.event_name != 'pull_request'
- build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-        matrix:
-            os: [ubuntu-latest, windows-latest]
-            python-version: [3.9]
-            include:
-            - os: ubuntu-latest
-              deploy-file: ./Hello
-            - os: windows-latest
-              deploy-file: ./Debug/Hello.exe
+ dockerpi:
+    runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - run: |
-        cmake . && cmake --build . && ${{ matrix.deploy-file }}
-        python -c "import sys; print(sys.version)"
-        ls -l
-      shell: bash
+    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - run: docker run -i -v "${PWD}/..:${PWD}/.." lebarsfa/pi:buster /bin/bash -c "uname -a && cat /etc/os-release && cd ${PWD} && apt-get -q update && apt-get -y install sudo lsb-release wget unzip build-essential cmake && lsb_release -a && cmake . && cmake --build . && mv ./Hello ./Hello_pi"
     - uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: "${{ matrix.deploy-file }}"
+        file: "./Hello_pi"
         overwrite: true
         tag_name: autotagname-${{ github.sha }}
       if: github.event_name != 'pull_request'
