@@ -10,14 +10,13 @@ jobs:
  deploy:
     runs-on: ubuntu-latest
     steps: 
-    - uses: actions/create-release@v1
+    - uses: softprops/action-gh-release@v1
       id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: true
         tag_name: autotagname-${{ github.sha }}
-        release_name: autotagname-${{ github.sha }}
       if: github.event_name != 'pull_request'
  build:
     runs-on: ${{ matrix.os }}
@@ -31,8 +30,8 @@ jobs:
             - os: windows-latest
               deploy-file: ./Debug/Hello.exe
     steps: 
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
