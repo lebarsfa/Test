@@ -1,8 +1,8 @@
 #on: [push, pull_request]
 on: 
     push:
-        branches: '**'
-        tags: '' # Restrict to blank tags
+        branches: ['**']
+        tags-ignore: ['**']  # Ignore all tag pushes
     pull_request:
     #pull_request_target: # This would run the old version of the actions, which could cause confusions...
 jobs:
@@ -10,7 +10,7 @@ jobs:
  deploy:
     runs-on: ubuntu-latest
     steps: 
-    - uses: softprops/action-gh-release@v1
+    - uses: softprops/action-gh-release@v2
       id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,15 +23,15 @@ jobs:
     strategy:
         matrix:
             os: [ubuntu-latest, windows-latest]
-            python-version: [3.9]
+            python-version: [3.14]
             include:
             - os: ubuntu-latest
               deploy-file: ./Hello
             - os: windows-latest
               deploy-file: ./Debug/Hello.exe
     steps: 
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - run: |
